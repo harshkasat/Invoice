@@ -25,4 +25,4 @@ jobs:
 
       - name: Run Celery worker
         run: |
-          celery -A celery_worker.celery_app worker --loglevel=info
+          celery -A Celery.celery_worker.celery_app worker --loglevel=info
