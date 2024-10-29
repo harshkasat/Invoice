@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '*/30 * * * *'  # Runs every 30 minutes (you can adjust this)
+    - cron: '*/30 * * * *'  # Runs every 30 minutes (adjustable)
 
 jobs:
   celery-worker:
@@ -24,5 +24,10 @@ jobs:
           pip install redis celery
 
       - name: Run Celery worker
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          # Add other secrets as needed
         run: |
-          celery -A Celery.celery_worker.celery_app worker --loglevel=info
+          celery -A Celery.celery_worker worker --logfile=info
