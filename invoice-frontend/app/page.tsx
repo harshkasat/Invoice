@@ -1,14 +1,32 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ArrowRight, FileSpreadsheet, Zap, Shield, Menu } from "lucide-react"
+import { useState } from "react";
+import { ArrowRight, FileSpreadsheet, Zap, Shield, Menu } from "lucide-react";
 import { useRouter } from 'next/navigation';
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import React from "react";
 
-export default function HomePage() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const router = useRouter()
+// Define props for FeatureCard
+interface FeatureCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
+  return (
+    <div className="bg-card text-card-foreground rounded-lg p-6 shadow-sm">
+      <div className="mb-4 text-primary">{icon}</div>
+      <h3 className="text-lg font-semibold mb-2">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
+  );
+};
+
+const HomePage: React.FC = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -82,10 +100,10 @@ export default function HomePage() {
         </section>
       </main>
     </div>
-  )
-}
+  );
+};
 
-function NavLinks() {
+const NavLinks: React.FC = () => {
   return (
     <>
       <Link href="/features" className="text-muted-foreground hover:text-foreground">
@@ -95,15 +113,7 @@ function NavLinks() {
         Contact
       </Link>
     </>
-  )
-}
+  );
+};
 
-function FeatureCard({ icon, title, description }) {
-  return (
-    <div className="bg-card text-card-foreground rounded-lg p-6 shadow-sm">
-      <div className="mb-4 text-primary">{icon}</div>
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
-    </div>
-  )
-}
+export default HomePage;
