@@ -1,0 +1,28 @@
+name: Run Celery Worker
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '*/30 * * * *'  # Runs every 30 minutes (you can adjust this)
+
+jobs:
+  celery-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install redis celery
+
+      - name: Run Celery worker
+        run: |
+          celery -A celery_worker.celery_app worker --loglevel=info
