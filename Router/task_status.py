@@ -14,8 +14,6 @@ class TaskStatus(BaseModel):
     status: str
 
 
-
-
 @router.get("/task-status/{task_id}", tags=["Task Status"])
 async def get_task_status(task_id: str):
     task_result = AsyncResult(task_id)

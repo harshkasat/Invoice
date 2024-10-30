@@ -1,15 +1,5 @@
-import os
-import tempfile
-
-from fastapi import Depends, FastAPI, File, UploadFile
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from fastapi.responses import JSONResponse
-# from pydantic import BaseModel
-# from sqlalchemy.orm import Session
-
-# from AwsService.s3_utils import upload_file_to_s3
-# from Celery.celery_worker import process_file_task
-# from celery.result import AsyncResult
 from Router import task_status, upload_invoice
 
 app = FastAPI()
@@ -23,6 +13,13 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+@app.get("/")
+async def root():
+    return {"message": "Invoice Parser is running."}
+
+@app.get("/health")
+async def health():
+    return {"message": "Invoice Parser is healthy."}
+
 app.include_router(task_status.router)
 app.include_router(upload_invoice.router)
-

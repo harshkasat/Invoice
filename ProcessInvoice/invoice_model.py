@@ -28,14 +28,16 @@ class InvoiveResponse(BaseModel):
 
 
 
-class Schema():
+class Schema:
     def __init__(self, suffix: str):
         self.suffix = suffix
 
-    def schema(self):
+    def __call__(self):
+        return self.schema_suffix()
+
+    def schema_suffix(self):
         if self.suffix == '.json':
             return self.json_schema()
-    
 
     def json_schema(self):
         try:

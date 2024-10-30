@@ -1,27 +1,9 @@
-import io
-import json
-import os
-import tempfile
-import zipfile
-from typing import List
-
-from dotenv import load_dotenv
-
-from celery import Celery
-
-load_dotenv()
-
 from AwsService.s3_utils import get_file_from_s3, delete_file_from_s3
 from ProcessInvoice.process_file import process_single_file
 from ProcessInvoice.convert_xlsx import _convert_xlsx
 from ProcessInvoice.process_zipfile import process_zip
 from Email.send_bulk_email import send_email_with_attachment
-
-
-
-celery_app = Celery('tasks', broker=os.getenv('REDIS_BROKER_URL'), backend=os.getenv('REDIS_BROKER_URL'))
-celery_app.conf.worker_pool = 'solo'
-
+from Celery import celery_app
 
 
 @celery_app.task
