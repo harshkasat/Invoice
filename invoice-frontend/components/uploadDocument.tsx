@@ -44,7 +44,7 @@ export default function UploadDocument({ setActiveTab }: UploadDocumentProps) {
     formData.append('email', email)
   
     try {
-      const response = await fetch(`http://127.0.0.1:8000/upload/upload_invoice?email=${formData.get('email')}`, {
+      const response = await fetch(`https://invoice-r8mn.onrender.com/upload/upload_invoice?email=${formData.get('email')}`, {
         method: 'POST',
         body: formData,
         headers: {

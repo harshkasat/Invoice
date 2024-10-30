@@ -28,7 +28,7 @@ export default function TaskStatus({ setActiveTab }: TaskStatusProps) {
     }
   
     try {
-      const response = await fetch(`http://127.0.0.1:8000/task/task-status/${statusTaskId}`, {
+      const response = await fetch(`https://invoice-r8mn.onrender.com/task/task-status/${statusTaskId}`, {
         method: 'GET',
       })
   
