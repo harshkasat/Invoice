@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16">
             <Link href="/" className="text-xl font-bold">
-              InvoiceToCSV
+              BillTrackr
             </Link>
             
             <div className="hidden md:flex items-center space-x-4">
@@ -64,9 +64,9 @@ const HomePage: React.FC = () => {
 
       <main className="flex-grow container mx-auto px-4 py-16">
         <section className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-4">Invoice to CSV Converter</h1>
+          <h1 className="text-4xl font-bold mb-4">Invoice to Excel Converter</h1>
           <p className="text-xl text-muted-foreground mb-8">
-            Effortlessly convert your invoices into CSV format for easy data management and analysis.
+            Effortlessly convert your invoices into Excel format for easy data management and analysis.
           </p>
           <Button size="lg" onClick={() => router.push('/dashboard')}>
             Get Started
@@ -78,7 +78,7 @@ const HomePage: React.FC = () => {
           <FeatureCard
             icon={<FileSpreadsheet className="h-10 w-10" />}
             title="Easy Conversion"
-            description="Convert complex invoice data into clean, organized CSV files with just a few clicks."
+            description="Convert complex invoice data into clean, organized Excel files with just a few clicks."
           />
           <FeatureCard
             icon={<Zap className="h-10 w-10" />}

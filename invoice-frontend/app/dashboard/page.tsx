@@ -18,7 +18,7 @@ export default function DocumentUploadSystem() {
         <Sidebar className="w-64 bg-white shadow-md">
           <SidebarContent>
             <div className="p-4">
-              <h2 className="text-2xl font-bold text-primary">DocuFlow</h2>
+              <h2 className="text-2xl font-bold text-primary">BillTrackr</h2>
             </div>
             <SidebarGroup>
               <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
