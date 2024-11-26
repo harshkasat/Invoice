@@ -77,21 +77,21 @@ export default function TaskStatus({ setActiveTab }: TaskStatusProps) {
               </Button>
               {fileStatus && (
                 <div className={`mt-4 p-4 rounded-md ${
-                  fileStatus === "Completed" ? "bg-green-50" : "bg-yellow-50"
+                  fileStatus === "SUCCESS" ? "bg-green-50" : "bg-yellow-50"
                 }`}>
                   <div className="flex items-center">
-                    {fileStatus === "Completed" ? (
+                    {fileStatus === "SUCCESS" ? (
                       <Check className="text-green-500 mr-2" />
                     ) : (
                       <AlertCircle className="text-yellow-500 mr-2" />
                     )}
                     <p className={`font-semibold ${
-                      fileStatus === "Completed" ? "text-green-800" : "text-yellow-800"
+                      fileStatus === "SUCCESS" ? "text-green-800" : "text-yellow-800"
                     }`}>
                       File Status: {fileStatus}
                     </p>
                   </div>
-                  {fileStatus === "Completed" && (
+                  {fileStatus === "SUCCESS" && (
                     <Button variant="outline" className="mt-2">
                       <FileText className="mr-2 h-4 w-4" />
                       View Results
