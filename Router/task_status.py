@@ -16,8 +16,12 @@ class TaskStatus(BaseModel):
 
 @router.get("/task-status/{task_id}", tags=["Task Status"])
 async def get_task_status(task_id: str):
-    task_result = AsyncResult(task_id)
+    try:
+        task_result = AsyncResult(task_id)
     
-    if task_result.ready():
+        if task_result.ready():
+            return TaskStatus(task_id=task_id, status=task_result.status)
         return TaskStatus(task_id=task_id, status=task_result.status)
-    return TaskStatus(task_id=task_id, status=task_result.status)
+    except Exception as e:
+        print(f"Error retrieving task status: {e}")
+        return TaskStatus(task_id=task_id, status="FAILED")

@@ -3,14 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from Router import task_status, upload_invoice
 import uvicorn
 
-app = FastAPI(docs_url=None, redoc_url=None)
+# app = FastAPI(docs_url=None, redoc_url=None)
+app = FastAPI()
 
 print("Starting FastAPI server...")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['https://invoice-kappa-eight.vercel.app/dashboard', 'localhost:3000/dashboard'],  # Allows all origins
+    allow_origins=['http://localhost:3000', 'https://invoice-kappa-eight.vercel.app'],  # Use only the origin
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
+    allow_methods=["*"],  # Allows all HTTP methods
     allow_headers=["*"],  # Allows all headers
 )
 
@@ -27,4 +28,4 @@ app.include_router(upload_invoice.router)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+    uvicorn.run('app:app', reload=True, host="0.0.0.0", port=8000, log_level="info")
