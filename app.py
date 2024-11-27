@@ -3,8 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from Router import task_status, upload_invoice
 import uvicorn
 
-# app = FastAPI(docs_url=None, redoc_url=None)
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 
 print("Starting FastAPI server...")
 app.add_middleware(

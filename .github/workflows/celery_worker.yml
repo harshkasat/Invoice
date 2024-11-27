@@ -14,6 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Remove unnecessary files
+        run: rm -rf invoice-frontend      
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
