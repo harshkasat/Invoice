@@ -3,6 +3,7 @@ name: Run Celery Worker
 on:
   schedule:
     - cron: '12 12 * * 1,3,5' # Runs every Monday, Wednesday, and Friday at 12:12 PM UTC
+  workflow_dispatch:
 
 jobs:
   celery-worker:
@@ -10,6 +11,7 @@ jobs:
     concurrency: 
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
