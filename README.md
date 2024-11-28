@@ -17,6 +17,8 @@
 </p>
 <br>
 
+![Video Demo]('https://github.com/harshkasat/Invoice/assets/BillTrackr.mp4')
+
 ## 🔗 Table of Contents
 
 - [📍 Overview](#-overview)
