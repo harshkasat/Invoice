@@ -17,7 +17,14 @@
 </p>
 <br>
 
-![Video Demo]('https://github.com/harshkasat/Invoice/assets/BillTrackr.mp4')
+</div>
+        </td>
+    </tr>
+</table>
+
+<div align="center">
+<video width="100%" src="" alt="Demo Video RAG SAAS">
+</div>
 
 ## 🔗 Table of Contents
 
