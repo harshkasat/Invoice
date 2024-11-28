@@ -17,13 +17,9 @@
 </p>
 <br>
 
-</div>
-        </td>
-    </tr>
-</table>
-
 <div align="center">
-<video width="100%" src="" alt="Demo Video RAG SAAS">
+<video width="100%" src="https://github.com/user-attachments/assets/81424ac0-1993-4485-9183-7f281ec9a729
+" alt="Bill Trackr">
 </div>
 
 ## 🔗 Table of Contents
