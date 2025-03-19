@@ -1,9 +1,12 @@
+import os
+import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from Router import task_status, upload_invoice
-import uvicorn
+load_dotenv()  # Load environment variables from .env file
 
-app = FastAPI(docs_url=None, redoc_url=None)
+app = FastAPI(docs_url=None, redoc_url=None) if not os.getenv('LOCAL_HOST') else FastAPI()
 
 print("Starting FastAPI server...")
 app.add_middleware(
