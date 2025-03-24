@@ -1,0 +1,1 @@
+imports = ['Celery.celery_worker']

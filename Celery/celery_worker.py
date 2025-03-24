@@ -9,7 +9,7 @@ from Celery import celery_app
 
 cloud_storage = CloudinaryStorage()
 
-@celery_app.task
+@celery_app.task(name='Celery.celery_worker.process_file_task')
 def process_file_task(public_id: str, email: str) -> dict:
     try:
         file_content, file_name = cloud_storage.get_files_from_cloudinary(public_id=public_id)
@@ -19,7 +19,6 @@ def process_file_task(public_id: str, email: str) -> dict:
             results = process_zip(file_content)
         else:
             results = [process_single_file(file_content, file_name)]
-
 
         # Combine results and upload to S3
         combined_result = {"results": results}

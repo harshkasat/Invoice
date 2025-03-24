@@ -1,17 +1,17 @@
-import tempfile
-import requests
 import os
+import requests
+import tempfile
 from typing import Optional
+import requests
 
 from Validator.json_validator import validate_json
 from ProcessInvoice.parsed_docs import ParsedDocs
 from ProcessInvoice.process_invoice import process_invoice
-import requests
 
 def process_single_file(file_content: str, file_name:str) -> dict:
 
     # Download the file from the URL
-    response = requests.get(file_content)
+    response = requests.get(file_content, timeout=20)
     if response.status_code == 200:
         # Create a temporary file
         with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file_name)[1]) as temp_file:
