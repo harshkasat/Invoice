@@ -1,14 +1,9 @@
 import uuid
-import os
 import enum
-from sqlalchemy import create_engine, Column, String, Integer, Text, ForeignKey, func, Enum
+from sqlalchemy import Column, String, Integer, Text, ForeignKey, func, Enum, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import declarative_base, sessionmaker
-
-
-DATABASE_URL = os.getenv("SUPABASE_DATABASE_URL")
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from sqlalchemy.orm import declarative_base
+from DB import engine
 
 Base = declarative_base()
 
@@ -29,19 +24,19 @@ class PDF(Base):
     __tablename__ = "pdfs"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    pdf_public_id = Column(String(100), unique=True, nullable=False)
+    pdf_name = Column(String(100), nullable=False)
     pdf_link = Column(Text, nullable=False)
-    created_at = Column(String, server_default=func.now)
-    updated_at = Column(String, server_default=func.now, onupdate=func.now)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
-Base.metadata.create_all(engine)
+# Move table creation to the bottom and add a function to handle it
+def init_db():
+    # Drop all tables first to ensure clean slate
+    Base.metadata.drop_all(engine)
+    # Create all tables
+    Base.metadata.create_all(engine)
 
-# Test Connection
-def test_connection():
-    try:
-        with engine.connect() as connection:
-            print("✅ Connected to Supabase successfully!")
-    except Exception as e:
-        print("❌ Error connecting to Supabase:", e)
-
-test_connection()
+if __name__ == "__main__":
+    # Run this file directly to recreate tables
+    init_db()
+    print("Database tables created successfully!")
