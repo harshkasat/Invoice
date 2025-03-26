@@ -135,17 +135,17 @@ class PDFModel:
     #             return {"message": "PDF updated successfully"}
     #         return {"message": "PDF not found"}
 
-if __name__ == "__main__":
-    # Create a valid UUID for testing
-    test_user_id = uuid4()
+# if __name__ == "__main__":
+#     # Create a valid UUID for testing
+#     test_user_id = uuid4()
 
-    pdf_model = PDFModel(
-        user_id='b9ff9107-ef7f-48f8-9944-5c807be24d6f',  # Using valid UUID instead of "123"
-        pdf_name='Sugarlab Proposal.pdf',
-        pdf_link='https://res.cloudinary.com/debxcs6le/raw/upload/v1742900547/123/a3svhfsqonwdf3saomk6.pdf'
-    )
-    result = pdf_model.save_to_db()
-    print(result)
+#     pdf_model = PDFModel(
+#         user_id='b9ff9107-ef7f-48f8-9944-5c807be24d6f',  # Using valid UUID instead of "123"
+#         pdf_name='Sugarlab Proposal.pdf',
+#         pdf_link='https://res.cloudinary.com/debxcs6le/raw/upload/v1742900547/123/a3svhfsqonwdf3saomk6.pdf'
+#     )
+#     result = pdf_model.save_to_db()
+#     print(result)
     # pdf_model.delete_pdf(pdf_id="123")
     # pdf_model.get_pdf_by_id(pdf_id="123")
     # print(pdf_model.list_pdfs_by_user_id())
