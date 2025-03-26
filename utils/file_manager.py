@@ -1,5 +1,5 @@
 from CloudStorage.utils import CloudinaryStorage
-from DB.db_operations import PDFModel
+from DB.db_operations import PDFModel, UserManager
 
 
 class PDFService:
@@ -40,8 +40,14 @@ class PDFService:
 
 
 if __name__ == "__main__":
+    import time
+    start = time.time()
+    user = UserManager(username='test', user_email='test@test.com')  # Use Role enum
+    response = user.create_user()
     pdf_service = PDFService()
-    # pdf_service.list_pdfs_by_user_id(user_id="123")
-    pdf_service.save_pdf(user_id="b9ff9107-ef7f-48f8-9944-5c807be24d6f",
+    pdf_service.save_pdf(user_id=response['user_id'],
                     file_path="C:/Users/Zedmat/Downloads/Sugarlab Proposal.pdf",
                     file_name="Sugarlab Proposal.pdf")
+    pdf_service.list_pdfs_by_user_id(user_id=response['user_id'])
+    print('endtime', time.time() - start)
+    # pdf_service.list_pdfs_by_user_id(user_id="b9ff9107-ef7f-48f8-9944-5c807be24d6f")
