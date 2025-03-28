@@ -5,7 +5,7 @@ from DB.db_operations import PDFModel, UserManager
 class PDFService:
 
     def __init__(self):
-        pass
+        self.cloud_storage = CloudinaryStorage()
 
     def list_pdfs_by_user_id(self, user_id):
         try:
@@ -17,14 +17,15 @@ class PDFService:
 
     def save_pdf(self, user_id, file_path, file_name):
         try:
-            cloud_storage = CloudinaryStorage()
-            result = cloud_storage.upload_to_cloudinary(
+
+            result = self.cloud_storage.upload_to_cloudinary(
                 file_path=file_path,
                 folder_name=user_id,
                 display_name=file_name)
-
-            if isinstance(result, str):
-                return {"info": 'File already exists'}
+            print("this save_pdf func",type(result))
+            if isinstance(result, dict):
+                exists_file = result['result']
+                return exists_file['secure_url'], exists_file['public_id'], exists_file['display_name']
             if result is None:
                 return {"error": "Failed to upload file"}
 
@@ -32,22 +33,22 @@ class PDFService:
             pdf_model = PDFModel(user_id=user_id,
                                pdf_name=original_filename,
                                pdf_link=secure_url)
-
-            return pdf_model.save_to_db()
+            pdf_model.save_to_db()
+            return secure_url, public_id, original_filename
         except Exception as e:
             print(f"Error saving PDF: {e}")
             return {"error": str(e)}
 
 
-if __name__ == "__main__":
-    import time
-    start = time.time()
-    user = UserManager(username='test', user_email='test@test.com')  # Use Role enum
-    response = user.create_user()
-    pdf_service = PDFService()
-    pdf_service.save_pdf(user_id=response['user_id'],
-                    file_path="C:/Users/Zedmat/Downloads/Sugarlab Proposal.pdf",
-                    file_name="Sugarlab Proposal.pdf")
-    pdf_service.list_pdfs_by_user_id(user_id=response['user_id'])
-    print('endtime', time.time() - start)
+# if __name__ == "__main__":
+#     import time
+#     start = time.time()
+#     user = UserManager(username='test', user_email='test@test.com')  # Use Role enum
+#     response = user.create_user()
+#     pdf_service = PDFService()
+#     pdf_service.save_pdf(user_id=response['user_id'],
+#                     file_path="C:/Users/Zedmat/Downloads/Sugarlab Proposal.pdf",
+#                     file_name="Sugarlab Proposal.pdf")
+#     pdf_service.list_pdfs_by_user_id(user_id=response['user_id'])
+#     print('endtime', time.time() - start)
     # pdf_service.list_pdfs_by_user_id(user_id="b9ff9107-ef7f-48f8-9944-5c807be24d6f")
