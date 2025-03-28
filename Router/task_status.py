@@ -18,7 +18,7 @@ class TaskStatus(BaseModel):
 async def get_task_status(task_id: str):
     try:
         task_result = AsyncResult(task_id)
-    
+
         if task_result.ready():
             return TaskStatus(task_id=task_id, status=task_result.status)
         return TaskStatus(task_id=task_id, status=task_result.status)

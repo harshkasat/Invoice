@@ -4,9 +4,10 @@ import os
 from CloudStorage.utils import CloudinaryStorage
 from Celery.celery_worker import process_file_task
 from fastapi.responses import JSONResponse
+from utils.file_manager import PDFService, UserManager
 
 
-cloud_storage = CloudinaryStorage()
+# cloud_storage = CloudinaryStorage()
 
 router = APIRouter(
     prefix='/upload',
@@ -16,7 +17,7 @@ router = APIRouter(
 
 
 @router.post("/upload_invoice", tags=["Upload Invoice"])
-async def upload_invoice(email: str, file: UploadFile = File(...)):
+async def upload_invoice(username:str, email: str, file: UploadFile = File(...)):
     try:
         # Save the uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -35,10 +36,14 @@ async def upload_invoice(email: str, file: UploadFile = File(...)):
         #     )
 
         # Upload the file to cloudinary
-        secure_url, public_id, original_filname = cloud_storage.upload_to_cloudinary(
+        user = UserManager(username=username, user_email=email)  # Use Role enum
+        response = user.create_user()
+        pdf_service = PDFService()
+        secure_url, public_id, original_filename = pdf_service.save_pdf(
+            user_id=response['user_id'],
             file_path=temp_file_path,
-            public_id=file.filename, # use uuid from pdf table
-            folder="invoices")
+            file_name=file.filename
+        )
 
         # Delete the temporary file
         os.unlink(temp_file_path)
@@ -51,7 +56,7 @@ async def upload_invoice(email: str, file: UploadFile = File(...)):
                 "message": "File uploaded and processing started", 
                 "secure_url": secure_url,
                 "public_id": public_id,
-                "filename": original_filname,
+                "filename": original_filename,
                 "task_id": task.id
             }
         )
