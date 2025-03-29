@@ -3,10 +3,16 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from Router import task_status, upload_invoice
+from Router import upload_invoice, task_status, db_route
 load_dotenv()  # Load environment variables from .env file
 
-app = FastAPI(docs_url=None, redoc_url=None) if not os.getenv('LOCAL_HOST') else FastAPI()
+
+if os.getenv('LOCAL_HOST'):
+    app = FastAPI()
+else:
+    app = FastAPI(docs_url=None,
+                  redoc_url=None)
+
 
 print("Starting FastAPI server...")
 app.add_middleware(
@@ -25,9 +31,12 @@ async def root():
 async def health():
     return {"message": "Invoice Parser is healthy."}
 
-app.include_router(task_status.router)
-app.include_router(upload_invoice.router)
+
+prefix = '/api/v1'
+app.include_router(task_status.router, prefix=prefix)
+app.include_router(upload_invoice.router, prefix=prefix)
+app.include_router(db_route.router, prefix=prefix)
 
 
-if __name__ == "__main__":
-    uvicorn.run('app:app', reload=True, host="0.0.0.0", port=8000, log_level="info")
+# if __name__ == "__main__":
+#     uvicorn.run('app:app', reload=True, host="0.0.0.0", port=8000, log_level="info")
