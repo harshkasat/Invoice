@@ -34,9 +34,11 @@ const InsightSection = () => {
           ))}
         </div>
         <div className="mt-8 text-center">
-          <Button variant="link" className="text-blue-500 hover:text-blue-400">
-            Explore more capabilities
-          </Button>
+            <a href="/soon/Explore">
+              <Button variant="link" className="text-blue-500 hover:text-blue-400">
+                Explore more capabilities
+              </Button>
+            </a>
         </div>
       </section>
   )

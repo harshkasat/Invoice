@@ -8,27 +8,27 @@ const Navbar = () => {
         <div className="container mx-auto flex items-center justify-between py-4">
           <div className="flex items-center gap-12">
             <Link href="/" className="text-xl font-bold">
-              Neuros
+              TallyMate
             </Link>
             <nav className="hidden md:block">
               <ul className="flex space-x-8">
                 <li>
-                  <Link href="#" className="text-sm text-gray-400 hover:text-white">
+                  <Link href="/soon/Features" className="text-sm text-gray-400 hover:text-white">
                     Features
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-sm text-gray-400 hover:text-white">
+                  <Link href="/soon/Use Cases" className="text-sm text-gray-400 hover:text-white">
                     Use Cases
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-sm text-gray-400 hover:text-white">
+                  <Link href="/soon/Pricing" className="text-sm text-gray-400 hover:text-white">
                     Pricing
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-sm text-gray-400 hover:text-white">
+                  <Link href="/soon/Applications" className="text-sm text-gray-400 hover:text-white">
                     Applications
                   </Link>
                 </li>

@@ -18,12 +18,12 @@ const Hero = () => {
             ahead of the curve.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button className="w-full rounded-full bg-blue-600 px-8 py-6 text-base hover:bg-blue-700 sm:w-auto">
+            <Button className="w-full rounded-full px-8 py-6 bg-blue-600 text-base hover:bg-blue-700 sm:w-auto">
               Request a Demo
             </Button>
             <Button
-              variant="outline"
-              className="w-full rounded-full border-gray-700 px-8 py-6 text-base hover:bg-gray-800 sm:w-auto"
+              
+              className="w-full rounded-full px-8 py-6 text-base bg-white sm:w-auto text-black hover:bg-blue-700 hover:text-white"
             >
               Learn More
             </Button>

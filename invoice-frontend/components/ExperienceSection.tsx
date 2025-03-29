@@ -4,7 +4,7 @@ const ExperienceSection = () => {
   return (
     <section className="container mx-auto mb-24">
         <div className="mb-16 text-center">
-          <h2 className="mb-4 text-3xl font-bold md:text-4xl">The Neuros Experience</h2>
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl">The TallyMate Experience</h2>
           <p className="mx-auto max-w-2xl text-gray-400">
             See why businesses choose our platform for their analytics needs
           </p>

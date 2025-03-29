@@ -12,27 +12,27 @@ const FAQ = () => {
           {/* FAQ Item */}
           <div className="rounded-lg border border-gray-800 bg-gray-900/30 p-6">
             <h3 className="mb-4 text-lg font-medium">
-              What is Neuros and what does it offer other analytics platforms?
+              What is TallyMate and what does it offer other analytics platforms?
             </h3>
             <p className="text-gray-400">
-              Neuros is an AI-powered analytics platform that combines advanced machine learning algorithms with
-              intuitive user interfaces to provide actionable insights from your data. Unlike other platforms, Neuros
+              TallyMate is an AI-powered analytics platform that combines advanced machine learning algorithms with
+              intuitive user interfaces to provide actionable insights from your data. Unlike other platforms, TallyMate
               offers real-time processing, predictive analytics, and seamless integration with your existing tools.
             </p>
           </div>
 
           {/* FAQ Item */}
           <div className="rounded-lg border border-gray-800 bg-gray-900/30 p-6">
-            <h3 className="mb-4 text-lg font-medium">Can Neuros integrate with my existing business tools?</h3>
+            <h3 className="mb-4 text-lg font-medium">Can TallyMate integrate with my existing business tools?</h3>
             <p className="text-gray-400">
-              Yes, Neuros offers over 200 pre-built integrations with popular business tools and platforms. Our API also
+              Yes, TallyMate offers over 200 pre-built integrations with popular business tools and platforms. Our API also
               allows for custom integrations with your proprietary systems.
             </p>
           </div>
 
           {/* FAQ Item */}
           <div className="rounded-lg border border-gray-800 bg-gray-900/30 p-6">
-            <h3 className="mb-4 text-lg font-medium">Is my data secure with Neuros?</h3>
+            <h3 className="mb-4 text-lg font-medium">Is my data secure with TallyMate?</h3>
             <p className="text-gray-400">
               Absolutely. We implement enterprise-grade security measures including end-to-end encryption, regular
               security audits, and compliance with industry standards like GDPR, HIPAA, and SOC 2.
