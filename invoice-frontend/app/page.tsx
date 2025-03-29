@@ -12,13 +12,10 @@ import { BackgroundPaths } from "@/components/ui/background-path"
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-[#0d1121] text-white pt-[72px]">
-      <div className="fixed inset-0 z-0">
-        <BackgroundPaths stripOpacity={0.01} stripSpeed={40}/>
-      </div>
-      <div className="relative z-10">
+        <BackgroundPaths stripOpacity={0.01} stripSpeed={30}/>
         {/* Navigation */}
         <Navbar/>
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
           {/* Hero Section */}
           <Hero/>
           {/* Video Demo Section */}
@@ -37,6 +34,5 @@ export default function Home() {
         {/* Footer */}
         <Footer/>
       </div>
-    </div>
   )
 }
