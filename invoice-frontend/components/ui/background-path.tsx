@@ -10,10 +10,12 @@ export function BackgroundPaths({
     stripSpeed?: number;
 }) {
     return (
-        <div className="w-full h-full">
+        <div className="fixed inset-0 z-0 pointer-events-none">
             <div className="w-full h-full">
-                <FloatingPaths position={1} stripOpacity={stripOpacity} stripSpeed={stripSpeed} />
-                <FloatingPaths position={-1} stripOpacity={stripOpacity} stripSpeed={stripSpeed} />
+                <div className="w-full h-full">
+                    <FloatingPaths position={1} stripOpacity={stripOpacity} stripSpeed={stripSpeed} />
+                    <FloatingPaths position={-1} stripOpacity={stripOpacity} stripSpeed={stripSpeed} />
+                </div>
             </div>
         </div>
     );

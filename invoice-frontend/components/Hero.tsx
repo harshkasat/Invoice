@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { Button } from './ui/button'
 
@@ -17,7 +18,10 @@ const Hero = () => {
             ahead of the curve.
           </p>
           <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 sm:flex-row">
-            <Button className="w-full rounded-full px-6 sm:px-8 py-5 sm:py-6 bg-blue-600 text-sm sm:text-base hover:bg-blue-700 sm:w-auto">
+            <Button 
+              className="w-full rounded-full px-6 sm:px-8 py-5 sm:py-6 bg-blue-600 text-sm sm:text-base hover:bg-blue-700 sm:w-auto"
+              onClick={() => console.log('Demo button clicked')}
+            >
               Request a Demo
             </Button>
             <Button

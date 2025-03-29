@@ -1,5 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
+import { X, Linkedin, Github  } from 'lucide-react';
+
 
 const Footer = () => {
   return (
@@ -108,18 +110,18 @@ const Footer = () => {
             </div>
             <div>
               <h3 className="mb-4 text-lg font-bold">Connect</h3>
-              <div className="flex space-x-4">
+                <div className="flex space-x-4">
                 <Link href="https://x.com/harsh__kasat" className="text-gray-400 hover:text-white">
                   <span className="sr-only">Twitter</span>
-                  <div className="h-6 w-6 rounded-full bg-gray-800"></div>
+                  <X/>
                 </Link>
                 <Link href="https://www.linkedin.com/in/harshkasat/" className="text-gray-400 hover:text-white">
                   <span className="sr-only">LinkedIn</span>
-                  <div className="h-6 w-6 rounded-full bg-gray-800"></div>
+                  <Linkedin/>
                 </Link>
                 <Link href="https://github.com/harshkasat/" className="text-gray-400 hover:text-white">
                   <span className="sr-only">GitHub</span>
-                  <div className="h-6 w-6 rounded-full bg-gray-800"></div>
+                  <Github/>
                 </Link>
               </div>
             </div>
