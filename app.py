@@ -1,10 +1,21 @@
 import os
-import uvicorn
+import requests
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, status, Response
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from typing import Annotated, Dict
+import jwt
+from jwt import PyJWKClient
 from fastapi.middleware.cors import CORSMiddleware
 from Router import upload_invoice, task_status, db_route
-load_dotenv()  # Load environment variables from .env file
+from middleware import JWTAuthMiddleware
+
+load_dotenv()
+
+JWKS_URL = "https://concrete-duckling-78.clerk.accounts.dev/.well-known/jwks.json"
+jwks_client = PyJWKClient(JWKS_URL)
+
+security = HTTPBearer()
 
 
 if os.getenv('LOCAL_HOST'):
@@ -23,9 +34,17 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+
 @app.get("/")
-async def root():
-    return {"message": "Invoice Parser is running."}
+async def root(payload: dict = Depends(JWTAuthMiddleware())):
+    return {"message": payload}
+
+@app.post("/user/")
+async def temp_user(params:int, payload:dict=Depends(JWTAuthMiddleware())):
+    return {
+        "user":params,
+        "payload":payload
+    }
 
 @app.get("/health")
 async def health():

@@ -18,17 +18,32 @@ class CloudinaryStorage:
                     public_id=full_pulbic_id,
                     resource_type="raw"
                 )
-                return True, result['public_id']
+                return result
             except cloudinary.api.NotFound:
                 return False
         except Exception as e:
             print(f"Error checking file: {e}")
 
+    def get_files_from_cloudinary(self, public_id):
+        try:
+            result = cloudinary.api.resource(
+                public_id=public_id,
+                resource_type="raw"
+            )
+            return result['secure_url'], result['display_name']
+        except Exception as e:
+            print(f"Error getting file: {e}")
+            return None, None
+
     def upload_to_cloudinary(self, file_path, folder_name, display_name):
         try:
-            if self.check_file_exist(display_name, folder_name):
+            exist_file = self.check_file_exist(display_name, folder_name)
+            if exist_file:
                 print(f"File already exists: {display_name}")
-                return "File already exists"
+                return {
+                    "message":"File already exists",
+                    "result":exist_file
+                }
             print(f"Uploading file: {file_path}")
             upload_result = cloud_uploader(
                                         file=file_path,
