@@ -3,7 +3,7 @@
 import type React from "react"
 import { UserButton } from "@clerk/nextjs"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Search, Bell, ChevronLeft, ChevronRight, Upload, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,14 +28,28 @@ export default function ContentRepositoryDashboard() {
   const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   const createUserID = async () => {
     await fetch(`${BASE_URL}/api/create-user`, {
-      method:"POST",
-      headers:{
+      method: "POST",
+      headers: {
         "Content-Type": "application/json"
-      }
+      },
+      credentials: 'include' // Add this to send cookies
     })
   }
 
-  createUserID()
+  const getListPdf = async () => {
+    await fetch (`${BASE_URL}/api/list-pdf`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: 'include' // Add this to send cookies
+    })
+  }
+
+  useEffect(() => {
+    createUserID();
+    getListPdf()
+  }, []);
 
   // Mock data for the file repository
   const files = [

@@ -1,5 +1,17 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+
+interface UserData {
+    email: string;
+    username: string;
+}
+
+interface CreateUserResponse {
+    message:string
+    user_id: string;
+    username: string;
+}
+
 export async function POST(req: Request) {
     const { userId, redirectToSignIn} = await auth();
 
@@ -10,11 +22,42 @@ export async function POST(req: Request) {
     try {
         const userData = await fetchUserData(userId);
         console.log(userData)
-        return NextResponse.json(userData);
+        const response: CreateUserResponse = await createUser(userData);
+        
+        // Create response with cookie
+        const nextResponse = NextResponse.json(response);
+        
+        // Set HTTP-only cookie with strict security options
+        nextResponse.cookies.set({
+            name: 'user_id',
+            value: response.user_id,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            path: '/',
+            // Expires in 7 days
+            maxAge: 60 * 60 * 24 * 7
+        });
+
+        return nextResponse;
     } catch (error) {
         console.error("Failed to fetch user data:", error);
         return NextResponse.json({ error: "Failed to fetch user data" }, { status: 500 });
     }
+}
+
+async function createUser(userData: UserData) {
+    const response = await fetch('http://127.0.0.1:8000/api/v1/db_operation/create_user', {
+        method:"POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+    })
+    
+    if (!response.ok) {
+        throw new Error("Failed to create user");
+    }
+
+    return response.json();
 }
 
 async function fetchUserData(userId: string) {
@@ -30,6 +73,5 @@ async function fetchUserData(userId: string) {
     return {
         email: user.email_addresses[0].email_address,
         username: user.username,
-        user_id: userId,
     };
 }
