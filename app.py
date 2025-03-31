@@ -1,21 +1,16 @@
 import os
-import requests
 from dotenv import load_dotenv
-from fastapi import FastAPI, Depends, status, Response
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from typing import Annotated, Dict
-import jwt
 from jwt import PyJWKClient
+
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from Router import upload_invoice, task_status, db_route
-from middleware import JWTAuthMiddleware
 
 load_dotenv()
 
 JWKS_URL = "https://concrete-duckling-78.clerk.accounts.dev/.well-known/jwks.json"
 jwks_client = PyJWKClient(JWKS_URL)
-
-security = HTTPBearer()
 
 
 if os.getenv('LOCAL_HOST'):
@@ -36,25 +31,33 @@ app.add_middleware(
 
 
 @app.get("/")
-async def root(payload: dict = Depends(JWTAuthMiddleware())):
-    return {"message": payload}
+async def root():
+    return {"message": 'server is running'}
 
-@app.post("/user/")
-async def temp_user(params:int, payload:dict=Depends(JWTAuthMiddleware())):
-    return {
-        "user":params,
-        "payload":payload
-    }
 
 @app.get("/health")
 async def health():
     return {"message": "Invoice Parser is healthy."}
 
 
-prefix = '/api/v1'
-app.include_router(task_status.router, prefix=prefix)
-app.include_router(upload_invoice.router, prefix=prefix)
-app.include_router(db_route.router, prefix=prefix)
+PREFIX = '/api/v1'
+app.include_router(
+    task_status.router,
+    prefix=PREFIX,
+    tags=["Task Status"]
+)
+
+app.include_router(
+    upload_invoice.router,
+    tags=["Upload Invoice"],
+    prefix=PREFIX
+)
+
+app.include_router(
+    db_route.router,
+    tags=["ALL DB Routes"],
+    prefix=PREFIX
+)
 
 
 # if __name__ == "__main__":

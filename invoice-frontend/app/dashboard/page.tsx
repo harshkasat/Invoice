@@ -8,23 +8,34 @@ import { Search, Bell, ChevronLeft, ChevronRight, Upload, ChevronDown } from "lu
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { useAuth } from "@clerk/nextjs"
+// import { useAuth } from "@clerk/nextjs"
 
 export default function ContentRepositoryDashboard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [activeTab, setActiveTab] = useState("repository")
-  const { getToken } = useAuth()
+  // const { getToken } = useAuth()
 
   // Use the token in an async function when needed
-  const handleUpload = async () => {
-    try {
-      const token = await getToken()
-      // Use the token for API calls here
-    } catch (error) {
-      console.error('Error getting token:', error)
-    }
+  // const handleUpload = async () => {
+  //   try {
+  //     const token = await getToken()
+  //     // Use the token for API calls here
+  //   } catch (error) {
+  //     console.error('Error getting token:', error)
+  //   }
+  // }
+  const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const createUserID = async () => {
+    await fetch(`${BASE_URL}/api/create-user`, {
+      method:"POST",
+      headers:{
+        "Content-Type": "application/json"
+      }
+    })
   }
+
+  createUserID()
 
   // Mock data for the file repository
   const files = [
