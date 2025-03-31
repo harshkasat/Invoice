@@ -15,7 +15,16 @@ export default function ContentRepositoryDashboard() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [activeTab, setActiveTab] = useState("repository")
   const { getToken } = useAuth()
-  const token = getToken()
+
+  // Use the token in an async function when needed
+  const handleUpload = async () => {
+    try {
+      const token = await getToken()
+      // Use the token for API calls here
+    } catch (error) {
+      console.error('Error getting token:', error)
+    }
+  }
 
   // Mock data for the file repository
   const files = [
