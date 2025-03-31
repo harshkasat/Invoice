@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
+import {SignIn, SignInButton, SignUp, SignUpButton } from '@clerk/nextjs'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,12 +41,14 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-6">
-          <Link href="#" className="hidden text-sm text-gray-400 hover:text-white md:block">
+          <Link href="/sign-in" className="hidden text-sm text-gray-400 hover:text-white md:block">
             Sign in
           </Link>
-          <Button className="hidden md:block rounded-full bg-blue-600 px-6 hover:bg-blue-700">
-            Get Started
-          </Button>
+          <SignUpButton>
+            <Button className="hidden md:block rounded-full bg-blue-600 px-6 hover:bg-blue-700">
+              Get Started
+            </Button>
+          </SignUpButton>
           
           {/* Mobile Menu Button */}
           <button
@@ -74,10 +77,12 @@ const Navbar = () => {
             <Link href="/soon/Use Cases" className="text-gray-100 hover:text-white text-lg font-medium">Use Cases</Link>
             <Link href="/soon/Pricing" className="text-gray-100 hover:text-white text-lg font-medium">Pricing</Link>
             <Link href="/soon/Applications" className="text-gray-100 hover:text-white text-lg font-medium">Applications</Link>
-            <Link href="#" className="text-gray-100 hover:text-white text-lg font-medium">Sign in</Link>
-            <Button className="w-full rounded-full bg-blue-600 px-6 py-4 text-lg font-medium hover:bg-blue-700">
-              Get Started
-            </Button>
+            <Link href="/sign-in" className="text-gray-100 hover:text-white text-lg font-medium">Sign in</Link>
+            <SignUpButton>
+              <Button className="w-full rounded-full bg-blue-600 px-6 py-4 text-lg font-medium hover:bg-blue-700">
+                Get Started
+              </Button>
+            </SignUpButton>
           </nav>
         </div>
       </div>

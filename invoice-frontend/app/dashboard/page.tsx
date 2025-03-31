@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import UploadDocument from '@/components/uploadDocument'
 import TaskStatus from '@/components/taskStatus'
+import { SignOutButton } from '@clerk/nextjs'
 
 export default function DocumentUploadSystem() {
   const [activeTab, setActiveTab] = useState<'upload' | 'status'>('upload')
@@ -57,7 +58,7 @@ export default function DocumentUploadSystem() {
                 </Button>
                 <Avatar>
                   <AvatarImage src="" alt="User" />
-                  <AvatarFallback>U</AvatarFallback>
+                  <SignOutButton/>
                 </Avatar>
               </div>
             </div>
