@@ -46,6 +46,33 @@ export default function ContentRepositoryDashboard() {
     })
   }
 
+  const createPdf = async () => {
+    if (!selectedFile) {
+      console.error('No file selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/create-pdf`, {
+        method: "POST",
+        body: formData,
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload file');
+      }
+
+      const result = await response.json();
+      console.log('Upload successful:', result);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  }
+
   useEffect(() => {
     createUserID();
     getListPdf()
@@ -324,7 +351,7 @@ export default function ContentRepositoryDashboard() {
               <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-[#1f2937]">
                 Cancel
               </Button>
-              <Button className="bg-[#3b82f6] hover:bg-[#2563eb] text-white">
+              <Button className="bg-[#3b82f6] hover:bg-[#2563eb] text-white" onClick={createPdf}>
                 <Upload className="h-4 w-4 mr-2" /> Upload
               </Button>
             </div>
