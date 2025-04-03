@@ -1,8 +1,11 @@
 'use client'
 import React from 'react'
 import { Button } from './ui/button'
+import { useVideo } from '../contexts/VideoContext'
 
 const Hero = () => {
+  const { setIsPlaying } = useVideo();
+  
   return (
     <section className="container mx-auto py-8 px-4 text-center sm:py-16 md:py-24">
         <div className="mx-auto max-w-3xl">
@@ -20,7 +23,11 @@ const Hero = () => {
           <div className="flex flex-col items-center justify-center gap-3 sm:gap-4 sm:flex-row">
             <Button 
               className="w-full rounded-full px-6 sm:px-8 py-5 sm:py-6 bg-blue-600 text-sm sm:text-base hover:bg-blue-700 sm:w-auto"
-              onClick={() => console.log('Demo button clicked')}
+              onClick={() => {
+                setIsPlaying(true);
+                // Scroll to video section
+                document.querySelector('#video-section')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Request a Demo
             </Button>
