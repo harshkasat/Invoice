@@ -12,10 +12,10 @@ class CloudinaryStorage:
 
     def check_file_exist(self, display_name, folder_name):
         try:
-            full_pulbic_id = f"{folder_name}/{display_name}"
+            full_public_id = f"{folder_name}/{display_name}"
             try:
                 result = cloudinary.api.resource(
-                    public_id=full_pulbic_id,
+                    public_id=full_public_id,
                     resource_type="raw"
                 )
                 return result
@@ -60,9 +60,10 @@ class CloudinaryStorage:
 
     def delete_file_from_cloudinary(self, display_name, folder_name):
         try:
-            _, public_id = self.check_file_exist(display_name, folder_name)
-            if not public_id:
-                return "File does not exist"
+            # _, public_id = self.check_file_exist(display_name, folder_name)
+            # if not public_id:
+            #     return "File does not exist"
+            public_id = f"{folder_name}/{display_name}"
             result = cloudinary.uploader.destroy(
                 public_id=public_id,
                 resource_type="raw"

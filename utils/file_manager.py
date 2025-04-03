@@ -39,6 +39,22 @@ class PDFService:
             print(f"Error saving PDF: {e}")
             return {"error": str(e)}
 
+    def delete_pdf(self, user_id, pdf_name):
+        try:
+            result = self.cloud_storage.delete_file_from_cloudinary(
+                display_name=pdf_name,
+                folder_name=user_id
+            )
+            PDFModel(user_id=user_id).delete_pdf(
+                pdf_name=pdf_name
+            )
+        except Exception as e:
+            print(f"Error occur while deleting the pdf file")
+            return {
+                "error": str(e)
+            }
+
+
 
 # if __name__ == "__main__":
 #     import time

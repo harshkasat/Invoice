@@ -8,23 +8,23 @@ import { Search, Bell, ChevronLeft, ChevronRight, Upload, ChevronDown } from "lu
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-// import { useAuth } from "@clerk/nextjs"
+
+// Add this interface near the top of the file
+interface PDF {
+  id: string;
+  name: string;
+  folder: string;
+  created_at: string;
+  link: string;
+}
 
 export default function ContentRepositoryDashboard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [activeTab, setActiveTab] = useState("repository")
-  // const { getToken } = useAuth()
+  const [pdfList, setPdfList] = useState<PDF[]>([]);
+  const [isUploading, setIsUploading] = useState(false)
 
-  // Use the token in an async function when needed
-  // const handleUpload = async () => {
-  //   try {
-  //     const token = await getToken()
-  //     // Use the token for API calls here
-  //   } catch (error) {
-  //     console.error('Error getting token:', error)
-  //   }
-  // }
   const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   const createUserID = async () => {
     await fetch(`${BASE_URL}/api/create-user`, {
@@ -37,13 +37,25 @@ export default function ContentRepositoryDashboard() {
   }
 
   const getListPdf = async () => {
-    await fetch (`${BASE_URL}/api/list-pdf`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: 'include' // Add this to send cookies
-    })
+    try {
+      const response = await fetch(`${BASE_URL}/api/list-pdf`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include' // Add this to send cookies
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch PDF list');
+      }
+      
+      const data = await response.json();
+      console.log('PDF list:', data);
+      setPdfList(data);
+    } catch (error) {
+      console.error('Error fetching PDF list:', error);
+    }
   }
 
   const createPdf = async () => {
@@ -52,6 +64,13 @@ export default function ContentRepositoryDashboard() {
       return;
     }
 
+    // Check if file is PDF
+    if (selectedFile.type !== 'application/pdf') {
+      alert('Please select a PDF file');
+      return;
+    }
+
+    setIsUploading(true);
     const formData = new FormData();
     formData.append('file', selectedFile);
 
@@ -68,43 +87,45 @@ export default function ContentRepositoryDashboard() {
 
       const result = await response.json();
       console.log('Upload successful:', result);
+      
+      // Clear the selected file
+      setSelectedFile(null);
+      
+      // Refresh the PDF list after successful upload
+      getListPdf();
     } catch (error) {
       console.error('Error uploading file:', error);
+    } finally {
+      setIsUploading(false);
     }
   }
 
+  const handleDownload = (link: string, filename: string) => {
+    const a = document.createElement('a');
+    a.href = link;
+    a.target = '_blank';
+    a.download = filename; // Set suggested filename
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   useEffect(() => {
     createUserID();
-    getListPdf()
+    getListPdf();
   }, []);
 
-  // Mock data for the file repository
-  const files = [
-    {
-      id: 1,
-      folder: "Documents",
-      name: "companies_demo_export.xlsx",
-      created: "2021-11-04 11:54",
-    },
-    {
-      id: 2,
-      folder: "Download Center",
-      name: "demo_image.jpg",
-      created: "2021-11-03 22:00",
-    },
-    {
-      id: 3,
-      folder: "Report",
-      name: "sample_demo_export.xlsx",
-      created: "2021-11-02 11:09",
-    },
-    {
-      id: 4,
-      folder: "Other",
-      name: "visit_demo_export.xlsx",
-      created: "2021-10-31 17:24",
-    },
-  ]
+  // Function to format date from ISO string
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).replace(',', '');
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -121,6 +142,14 @@ export default function ContentRepositoryDashboard() {
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setSelectedFile(e.dataTransfer.files[0])
     }
+  }
+
+  const handleUploadClick = () => {
+    createPdf();
+  }
+
+  const getFileId = (file: any, index: number) => {
+    return index + 1;
   }
 
   return (
@@ -181,7 +210,7 @@ export default function ContentRepositoryDashboard() {
         <main className="p-6">
           <div className="bg-[#111827] rounded-xl shadow-sm p-6 mb-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-medium text-white">Repository</h2>
+              <h2 className="text-lg font-medium text-white">PDF Repository</h2>
               <div className="flex items-center text-xs text-gray-400">
                 <span>FILE DETAILS</span>
                 <ChevronDown className="h-4 w-4 ml-1" />
@@ -193,7 +222,7 @@ export default function ContentRepositoryDashboard() {
               <table className="w-full">
                 <thead>
                   <tr className="text-left text-sm text-gray-400 border-b border-gray-700">
-                    <th className="pb-2 w-12"></th>
+                    <th className="pb-2 w-12">ID</th>
                     <th className="pb-2 w-40">Folder</th>
                     <th className="pb-2">Name</th>
                     <th className="pb-2">
@@ -205,9 +234,9 @@ export default function ContentRepositoryDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {files.map((file, index) => (
-                    <tr key={file.id} className={index % 2 === 0 ? "bg-[#111827]" : "bg-[#1a2235]"}>
-                      <td className="py-3 text-[#3b82f6] font-medium">{file.id}</td>
+                  {pdfList.map((file, index) => (
+                    <tr key={getFileId(file, index)} className={index % 2 === 0 ? "bg-[#111827]" : "bg-[#1a2235]"}>
+                      <td className="py-3 text-[#3b82f6] font-medium">{getFileId(file, index)}</td>
                       <td className="py-3">
                         <div className="flex items-center">
                           <div className="w-6 h-6 rounded bg-[#3b82f6] flex items-center justify-center mr-2">
@@ -228,9 +257,14 @@ export default function ContentRepositoryDashboard() {
                         </div>
                       </td>
                       <td className="py-3 text-white">{file.name}</td>
-                      <td className="py-3 text-gray-400">{file.created}</td>
+                      <td className="py-3 text-gray-400">{new Date(file.created_at).toLocaleString()}</td>
                       <td className="py-3">
-                        <button className="bg-[#3b82f6] text-white text-sm py-1 px-4 rounded-md">Download</button>
+                        <button 
+                          className="bg-[#3b82f6] text-white text-sm py-1 px-4 rounded-md"
+                          onClick={() => handleDownload(file.link, file.name)}
+                        >
+                          Download
+                        </button>
                       </td>
                       <td className="py-3">
                         <button className="w-8 h-8 rounded-full bg-[#1f2937] flex items-center justify-center text-[#3b82f6]">
@@ -269,7 +303,7 @@ export default function ContentRepositoryDashboard() {
 
           {/* Add File Section */}
           <div className="bg-[#111827] rounded-xl shadow-sm p-6">
-            <h2 className="text-lg font-medium text-white mb-6">Add file to repository:</h2>
+            <h2 className="text-lg font-medium text-white mb-6">Add PDF file to repository:</h2>
 
             <div className="grid grid-cols-3 gap-6">
               <div className="space-y-4">
@@ -311,13 +345,13 @@ export default function ContentRepositoryDashboard() {
                       <Upload className="h-5 w-5" />
                     </div>
                   </div>
-                  <p className="text-sm text-gray-300">Select a file or drag and drop here</p>
-                  <p className="text-xs text-gray-500 mt-1">JPG, XLSX or PDF, file size no more than 10MB</p>
+                  <p className="text-sm text-gray-300">Select a PDF file or drag and drop here</p>
+                  <p className="text-xs text-gray-500 mt-1">PDF files only, file size no more than 10MB</p>
 
                   <div className="mt-3">
                     <label className="cursor-pointer">
                       <span className="bg-[#1f2937] text-[#3b82f6] py-1 px-4 rounded-md text-sm">SELECT FILE</span>
-                      <input type="file" className="hidden" onChange={handleFileChange} accept=".jpg,.xlsx,.pdf" />
+                      <input type="file" className="hidden" onChange={handleFileChange} accept=".pdf,application/pdf" />
                     </label>
                   </div>
                 </div>
@@ -348,11 +382,25 @@ export default function ContentRepositoryDashboard() {
             </div>
 
             <div className="flex justify-end gap-2 mt-6">
-              <Button variant="outline" className="border-gray-700 text-gray-300 hover:bg-[#1f2937]">
+              <Button 
+                variant="outline" 
+                className="border-gray-700 text-gray-300 hover:bg-[#1f2937]"
+                onClick={() => setSelectedFile(null)}
+              >
                 Cancel
               </Button>
-              <Button className="bg-[#3b82f6] hover:bg-[#2563eb] text-white" onClick={createPdf}>
-                <Upload className="h-4 w-4 mr-2" /> Upload
+              <Button 
+                className="bg-[#3b82f6] hover:bg-[#2563eb] text-white"
+                onClick={handleUploadClick}
+                disabled={!selectedFile || isUploading}
+              >
+                {isUploading ? (
+                  <span>Uploading...</span>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4 mr-2" /> Upload
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -369,11 +417,10 @@ export default function ContentRepositoryDashboard() {
             <button className="w-6 h-6 flex items-center justify-center rounded-md mr-4 text-gray-400">
               <ChevronRight className="h-4 w-4" />
             </button>
-            <span>30</span>
+            <span>{pdfList.length || 0}</span>
           </div>
         </main>
       </div>
     </div>
   )
 }
-

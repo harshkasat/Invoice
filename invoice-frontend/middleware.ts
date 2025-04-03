@@ -6,9 +6,9 @@ const isDashboardRoute = createRouteMatcher(['/dashboard(.*)'])
 const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
-  // if (!isPublicRoute(req)) {
-  //   await auth.protect()
-  // }
+  if (!isPublicRoute(req)) {
+    await auth.protect()
+  }
 
   // Restrict admin route to users with specific role
   if (isAdminRoute(req) && (await auth()).sessionClaims?.metadata?.role !== 'admin') {

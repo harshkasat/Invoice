@@ -55,7 +55,6 @@ app.include_router(
 
 app.include_router(
     db_route.router,
-    tags=["ALL DB Routes"],
     prefix=PREFIX
 )
 

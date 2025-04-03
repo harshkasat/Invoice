@@ -15,7 +15,7 @@ router = APIRouter(
 
 class UserModel(BaseModel):
     username: Optional[str]
-    user_email: Optional[str]
+    email: Optional[str]
 
 @router.get('/', tags=["Health of Server"])
 async def check_route_health():
@@ -28,9 +28,8 @@ async def check_route_health():
 @router.post('/create_user', tags=["User Manager"])
 async def create_user(user_info:UserModel):
     user = UserManager(username=user_info.username,
-                       user_email=user_info.user_email)
+                       user_email=user_info.email)
     get_user = user.create_user()
-
     return JSONResponse(get_user)
 
 
@@ -47,7 +46,7 @@ async def get_user_by_email(email:str):
     get_user = user.get_user_by_email(email=email)
     return JSONResponse(get_user)
 
-@router.delete('/user', tags=["User Manager"])
+@router.delete('/delete_user', tags=["User Manager"])
 async def delete_user(user_id:UUID):
     user = UserManager()
     deleted_user = user.delete_user(user_id=user_id)
@@ -80,3 +79,8 @@ async def create_pdf(user_id:UUID, file_path:UploadFile = File(...)):
             "public_id": public_id,
             "filename": original_filename
         })
+
+@router.delete('/delete_pdf', tags=["PDF Manager"])
+async def delete_pdf(user_id, pdf_name):
+    pdf_service = PDFService()
+    pdf_service.delete_pdf(user_id=user_id, pdf_name=pdf_name)

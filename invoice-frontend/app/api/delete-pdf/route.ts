@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
 
-export async function GET(req: Request) {
+export async function DELETE(req: Request) {
     const { userId, redirectToSignIn } = await auth();
 
     if (!userId) {
@@ -18,7 +18,7 @@ export async function GET(req: Request) {
             return NextResponse.json({ error: "User ID not found in cookie" }, { status: 401 });
         }
 
-        const listPdf = await getListPdf(user_id.value)
+        const listPdf = await getListPdf(user_id.value, pdfName)
         console.log(listPdf)
         return NextResponse.json(listPdf)
     } catch (error) {
@@ -29,10 +29,11 @@ export async function GET(req: Request) {
     }
 }
 
-async function getListPdf(userId: string) {
-    const response = await fetch(`http://127.0.0.1:8000/api/v1/db_operation/list_pdf?user_id=${userId}`, {
-        method: "GET",
+async function getListPdf(userId: string, pdfName:string) {
+    const response = await fetch(`http://127.0.0.1:8000//api/v1/db_operation/delete_user/?user_id=${userId}&pdf_name=${pdfName}`, {
+        method: "DELETE",
         headers: { "Content-Type": "application/json" }
     });
     return response.json();
 }
+

@@ -23,6 +23,7 @@ export async function POST(req: Request) {
         const userData = await fetchUserData(userId);
         console.log(userData)
         const response: CreateUserResponse = await createUser(userData);
+        console.log(response.user_id)
         
         // Create response with cookie
         const nextResponse = NextResponse.json(response);

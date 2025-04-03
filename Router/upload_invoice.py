@@ -17,7 +17,7 @@ router = APIRouter(
 
 
 @router.post("/upload_invoice", tags=["Upload Invoice"])
-async def upload_invoice(username:str, email: str, file: UploadFile = File(...)):
+async def upload_invoice(user_id:str, file: UploadFile = File(...)):
     try:
         # Save the uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -36,11 +36,11 @@ async def upload_invoice(username:str, email: str, file: UploadFile = File(...))
         #     )
 
         # Upload the file to cloudinary
-        user = UserManager(username=username, user_email=email)  # Use Role enum
-        response = user.create_user()
+        user = UserManager()  # Use Role enum
+        response = user.get_user_info(user_id=user_id)
         pdf_service = PDFService()
         secure_url, public_id, original_filename = pdf_service.save_pdf(
-            user_id=response['user_id'],
+            user_id=user_id,
             file_path=temp_file_path,
             file_name=file.filename
         )
@@ -49,7 +49,7 @@ async def upload_invoice(username:str, email: str, file: UploadFile = File(...))
         os.unlink(temp_file_path)
 
         # Start Celery task
-        task = process_file_task.delay(public_id, email=email)
+        task = process_file_task.delay(public_id, email=response['email'])
 
         return JSONResponse(
             content={

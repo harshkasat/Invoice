@@ -30,6 +30,7 @@ class PDFModel:
                             "id": str(pdf.id),
                             "name": pdf.pdf_name,
                             "link": pdf.pdf_link,
+                            "folder": "Documents",
                             "created_at": str(pdf.created_at)
                         })
                     return pdf_list
@@ -77,15 +78,15 @@ class PDFModel:
                     pdf_name=self.pdf_name,
                     pdf_link=self.pdf_link,
                 )
-                # Get the user and update their credits
+                # Get the user and update their credit
                 user = session.query(User).filter(User.id == self.user_id).first()
                 if not user:
                     return {"message": "User not found"}
-                if user.credits <= 0:
-                    return {"message": "Insufficient credits"}
+                if user.credit <= 0:
+                    return {"message": "Insufficient credit"}
 
                 # Deduct 1 credit for saving PDF
-                user.credits -= 1
+                user.credit -= 1
                 session.add(user)
                 session.add(pdf)
                 session.commit()
@@ -94,14 +95,11 @@ class PDFModel:
             print(f"Error details: {str(e)}")
             return {"message": f"Error saving PDF: {e}"}
 
-    def delete_pdf(self, pdf_id, user):
+    def delete_pdf(self, pdf_name):
         try:
-            if not has_permsission(user, "edit"):
-                return {"message": "Permission denied"}
-
             with SessionLocal() as session:
                 pdf = session.query(PDF).filter(PDF.user_id == self.user_id,
-                                                PDF.id == pdf_id).first()
+                                                PDF.pdf_name == pdf_name).first()
                 if pdf:
                     session.delete(pdf)
                     session.commit()
@@ -129,6 +127,7 @@ class UserManager:
         try:
             # Check if user already exists
             existing_user = self.get_user_by_email(self.user_email)
+            print(existing_user)
             if existing_user:
                 return {
                     "message": f"User with email {self.user_email} already exists",
@@ -199,6 +198,18 @@ class UserManager:
         except Exception as e:
             print(f"Error listing users: {e}")
             return {"view_users": [], "edit_users": []}
+    
+    def get_user_info(self, user_id:str):
+        try:
+            with SessionLocal() as session:
+                user_info = session.query(User).filter(User.id == user_id).first()
+                return {
+                    "username":user_info.username,
+                    "email":user_info.user_email
+                }
+        except Exception as e:
+            print(f"Error checking user: {e}")
+            return None
 
 
 # if __name__ == "__main__":
