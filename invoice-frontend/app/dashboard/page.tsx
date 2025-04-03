@@ -26,6 +26,28 @@ export default function ContentRepositoryDashboard() {
   const [isUploading, setIsUploading] = useState(false)
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  
+  const deletePdf = async (filename: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/delete-pdf/${filename}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete PDF');
+      }
+
+      // Refresh the PDF list after successful deletion
+      getListPdf();
+    } catch (error) {
+      console.error('Error deleting PDF:', error);
+    }
+  }
+  
   const createUserID = async () => {
     await fetch(`${BASE_URL}/api/create-user`, {
       method: "POST",
@@ -279,7 +301,10 @@ export default function ContentRepositoryDashboard() {
                         </button>
                       </td>
                       <td className="py-3">
-                        <button className="w-8 h-8 rounded-full bg-[#1f2937] flex items-center justify-center text-red-500">
+                        <button 
+                          className="w-8 h-8 rounded-full bg-[#1f2937] flex items-center justify-center text-red-500"
+                          onClick={() => deletePdf(file.name)}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-4 w-4"

@@ -19,7 +19,6 @@ export async function GET(req: Request) {
         }
 
         const listPdf = await getListPdf(user_id.value)
-        console.log(listPdf)
         return NextResponse.json(listPdf)
     } catch (error) {
         console.error('Failed to fetch list of pdf')

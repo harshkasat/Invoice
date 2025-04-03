@@ -10,26 +10,31 @@ export async function DELETE(req: Request) {
     }
 
     try {
+        // Extract PDF name from URL
+        const pdfName = req.url.split('/').pop();
+        if (!pdfName) {
+            return NextResponse.json({ error: "PDF name is required" }, { status: 400 });
+        }
+
         const cookieStore = await cookies()
-        // Get user_id from cookie
         const user_id = cookieStore.get('user_id');
         
         if (!user_id) {
             return NextResponse.json({ error: "User ID not found in cookie" }, { status: 401 });
         }
 
-        const listPdf = await getListPdf(user_id.value, pdfName)
-        console.log(listPdf)
-        return NextResponse.json(listPdf)
+        const result = await getListPdf(user_id.value, pdfName)
+        console.log(result)
+        return NextResponse.json(result)
     } catch (error) {
-        console.error('Failed to fetch list of pdf')
+        console.error('Failed to delete PDF:', error)
         return NextResponse.json({
-            error: "Failed to fetch list of pdf"
+            error: "Failed to delete PDF"
         }, { status: 500 })
     }
 }
 
-async function getListPdf(userId: string, pdfName:string) {
+async function getListPdf(userId: string, pdfName: string) {
     const response = await fetch(`http://127.0.0.1:8000//api/v1/db_operation/delete_user/?user_id=${userId}&pdf_name=${pdfName}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" }
