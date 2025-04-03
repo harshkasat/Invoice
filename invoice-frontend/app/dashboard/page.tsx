@@ -122,6 +122,28 @@ export default function ContentRepositoryDashboard() {
     }
   }
 
+  const getCheckCredit = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/check-credit`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: 'include' // Add this to send cookies
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch PDF list');
+      }
+      
+      const data = await response.json();
+      console.log('Credit Left:', data);
+      setPdfList(data);
+    } catch (error) {
+      console.error('Error fetching Credit Left:', error);
+    }
+  }
+
   const handleDownload = (link: string, filename: string) => {
     const a = document.createElement('a');
     a.href = link;
@@ -135,6 +157,7 @@ export default function ContentRepositoryDashboard() {
   useEffect(() => {
     createUserID();
     getListPdf();
+    getCheckCredit();
   }, []);
 
   // Function to format date from ISO string
@@ -256,7 +279,7 @@ export default function ContentRepositoryDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {pdfList.map((file, index) => (
+                  {(pdfList || []).map((file, index) => (
                     <tr key={getFileId(file, index)} className={index % 2 === 0 ? "bg-[#111827]" : "bg-[#1a2235]"}>
                       <td className="py-3 text-[#3b82f6] font-medium">{getFileId(file, index)}</td>
                       <td className="py-3">
@@ -337,9 +360,6 @@ export default function ContentRepositoryDashboard() {
                   <div className="relative">
                     <select className="w-full p-2 border border-gray-700 rounded-md appearance-none bg-[#1f2937] text-white focus:outline-none focus:ring-1 focus:ring-[#3b82f6]">
                       <option>Documents</option>
-                      <option>Download Center</option>
-                      <option>Report</option>
-                      <option>Other</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   </div>
@@ -442,7 +462,7 @@ export default function ContentRepositoryDashboard() {
             <button className="w-6 h-6 flex items-center justify-center rounded-md mr-4 text-gray-400">
               <ChevronRight className="h-4 w-4" />
             </button>
-            <span>{pdfList.length || 0}</span>
+            <span>{pdfList?.length || 0}</span>
           </div>
         </main>
       </div>

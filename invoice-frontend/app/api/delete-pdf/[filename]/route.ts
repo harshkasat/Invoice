@@ -23,7 +23,7 @@ export async function DELETE(req: Request) {
             return NextResponse.json({ error: "User ID not found in cookie" }, { status: 401 });
         }
 
-        const result = await getListPdf(user_id.value, pdfName)
+        const result = await deletePdf(user_id.value, pdfName)
         console.log(result)
         return NextResponse.json(result)
     } catch (error) {
@@ -34,8 +34,9 @@ export async function DELETE(req: Request) {
     }
 }
 
-async function getListPdf(userId: string, pdfName: string) {
-    const response = await fetch(`http://127.0.0.1:8000//api/v1/db_operation/delete_user/?user_id=${userId}&pdf_name=${pdfName}`, {
+async function deletePdf(userId: string, pdfName: string) {
+    console.log("delet PDF fastapi"+ pdfName)
+    const response = await fetch(`http://127.0.0.1:8000/api/v1/db_operation/delete_pdf/?user_id=${userId}&pdf_name=${pdfName}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" }
     });

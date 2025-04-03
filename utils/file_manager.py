@@ -23,9 +23,10 @@ class PDFService:
                 folder_name=user_id,
                 display_name=file_name)
             print("this save_pdf func",type(result))
-            if isinstance(result, dict):
-                exists_file = result['result']
-                return exists_file['secure_url'], exists_file['public_id'], exists_file['display_name']
+            if isinstance(result, str):
+                print(result)
+            #     exists_file = result['result']
+                return "File is already exists"
             if result is None:
                 return {"error": "Failed to upload file"}
 

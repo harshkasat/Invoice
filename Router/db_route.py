@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from DB.db_operations import UserManager
 from utils.file_manager import PDFService
 from typing import Optional
+from urllib.parse import unquote
 from uuid import UUID
 
 router = APIRouter(
@@ -67,11 +68,18 @@ async def create_pdf(user_id:UUID, file_path:UploadFile = File(...)):
         temp_file.write(content)
         temp_file_path = temp_file.name
     pdf_service = PDFService()
-    secure_url, public_id, original_filename = pdf_service.save_pdf(
+    response = pdf_service.save_pdf(
         user_id=user_id,
         file_path=temp_file_path,
         file_name=file_path.filename
         )
+    if isinstance(response, str):
+        return JSONResponse(
+            content={
+                "message":response
+            }
+        )
+    secure_url, public_id, original_filename = response
     return JSONResponse(
         content={
             "message": "File uploaded and processing started", 
@@ -79,8 +87,24 @@ async def create_pdf(user_id:UUID, file_path:UploadFile = File(...)):
             "public_id": public_id,
             "filename": original_filename
         })
+    # return JSONResponse(
+    #     content={
+    #         "user_id":str(user_id),
+    #         "file path":temp_file_path,
+    #         "file name":file_path.filename
+    #     }
+    # )
 
 @router.delete('/delete_pdf', tags=["PDF Manager"])
 async def delete_pdf(user_id, pdf_name):
     pdf_service = PDFService()
-    pdf_service.delete_pdf(user_id=user_id, pdf_name=pdf_name)
+    decode_pdf_name = unquote(pdf_name)
+    print(decode_pdf_name)
+    pdf_service.delete_pdf(user_id=user_id, pdf_name=decode_pdf_name)
+
+
+@router.get('/check_credit', tags=["User Manager"])
+async def check_credits(user_id):
+    user = UserManager()
+    credit_left = user.check_credit_limit(user_id=user_id)
+    return JSONResponse(credit_left)

@@ -37,13 +37,10 @@ class CloudinaryStorage:
 
     def upload_to_cloudinary(self, file_path, folder_name, display_name):
         try:
+            folder_name = str(folder_name)
             exist_file = self.check_file_exist(display_name, folder_name)
             if exist_file:
-                print(f"File already exists: {display_name}")
-                return {
-                    "message":"File already exists",
-                    "result":exist_file
-                }
+                return "File is already exists"
             print(f"Uploading file: {file_path}")
             upload_result = cloud_uploader(
                                         file=file_path,

@@ -210,6 +210,16 @@ class UserManager:
         except Exception as e:
             print(f"Error checking user: {e}")
             return None
+    
+    def check_credit_limit(self, user_id:str):
+        try:
+            with SessionLocal() as session:
+                user_info = session.query(User).filter(User.id == user_id).first()
+                return {
+                    "credit_lef":user_info.credit
+                }
+        except Exception as e:
+            print(f"Error when checking limit: {e}")
 
 
 # if __name__ == "__main__":
