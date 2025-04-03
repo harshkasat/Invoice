@@ -24,6 +24,7 @@ export default function ContentRepositoryDashboard() {
   const [activeTab, setActiveTab] = useState("repository")
   const [pdfList, setPdfList] = useState<PDF[]>([]);
   const [isUploading, setIsUploading] = useState(false)
+  const [creditLeft, setCreditLeft] = useState<number>(5) // Default to 10 for initialization
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   
@@ -92,6 +93,12 @@ export default function ContentRepositoryDashboard() {
       return;
     }
 
+    // Check if user has credits
+    if (creditLeft <= 0) {
+      alert('You have no credits left. Please contact us at dizznuts@gmail.com .');
+      return;
+    }
+
     setIsUploading(true);
     const formData = new FormData();
     formData.append('file', selectedFile);
@@ -115,6 +122,8 @@ export default function ContentRepositoryDashboard() {
       
       // Refresh the PDF list after successful upload
       getListPdf();
+      // Check credits after upload
+      getCheckCredit();
     } catch (error) {
       console.error('Error uploading file:', error);
     } finally {
@@ -133,12 +142,12 @@ export default function ContentRepositoryDashboard() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to fetch PDF list');
+        throw new Error('Failed to fetch credit information');
       }
       
       const data = await response.json();
       console.log('Credit Left:', data);
-      setPdfList(data);
+      setCreditLeft(data.creditLeft || 0); // Assuming the API returns an object with creditLeft property
     } catch (error) {
       console.error('Error fetching Credit Left:', error);
     }
@@ -197,6 +206,20 @@ export default function ContentRepositoryDashboard() {
     return index + 1;
   }
 
+  // Function to determine credit badge color
+  const getCreditBadgeColor = () => {
+    if (creditLeft <= 0) return "bg-red-600";
+    if (creditLeft <= 2) return "bg-yellow-500";
+    return "bg-green-500";
+  }
+
+  // Function to determine credit status text
+  const getCreditStatusText = () => {
+    if (creditLeft <= 0) return "No credits";
+    if (creditLeft <= 2) return "Low credits";
+    return "Credits OK";
+  }
+
   return (
     <div className="min-h-screen bg-[#0e1120]">
       {/* Sidebar */}
@@ -236,6 +259,11 @@ export default function ContentRepositoryDashboard() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
+            {/* Credit Badge */}
+            <div className={`px-3 py-1 rounded-full text-white text-xs flex items-center ${getCreditBadgeColor()}`}>
+              <span className="font-medium mr-1">{creditLeft}</span>
+              <span>{getCreditStatusText()}</span>
+            </div>
             <div className="relative">
               <Input
                 placeholder="Search"
@@ -351,7 +379,14 @@ export default function ContentRepositoryDashboard() {
 
           {/* Add File Section */}
           <div className="bg-[#111827] rounded-xl shadow-sm p-6">
-            <h2 className="text-lg font-medium text-white mb-6">Add PDF file to repository:</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg font-medium text-white">Add PDF file to repository:</h2>
+              {creditLeft <= 0 && (
+                <div className="bg-red-600/20 text-red-400 border border-red-600/30 rounded-md px-3 py-1 text-sm">
+                  You need to upgrade your plan to upload more files. Please contact us at dizznuts@gmail.com .
+                </div>
+              )}
+            </div>
 
             <div className="grid grid-cols-3 gap-6">
               <div className="space-y-4">
@@ -381,12 +416,16 @@ export default function ContentRepositoryDashboard() {
 
               <div className="col-span-2">
                 <div
-                  className="border-2 border-dashed border-gray-700 rounded-lg p-6 text-center h-32 flex flex-col items-center justify-center"
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
+                  className={`border-2 border-dashed rounded-lg p-6 text-center h-32 flex flex-col items-center justify-center ${
+                    creditLeft <= 0 ? 'border-gray-700 bg-gray-800/30 opacity-60' : 'border-gray-700'
+                  }`}
+                  onDragOver={creditLeft > 0 ? handleDragOver : (e) => e.preventDefault()}
+                  onDrop={creditLeft > 0 ? handleDrop : (e) => e.preventDefault()}
                 >
                   <div className="mb-2">
-                    <div className="w-10 h-10 rounded-full bg-[#1f2937] mx-auto flex items-center justify-center text-[#3b82f6]">
+                    <div className={`w-10 h-10 rounded-full mx-auto flex items-center justify-center ${
+                      creditLeft <= 0 ? 'bg-gray-700 text-gray-500' : 'bg-[#1f2937] text-[#3b82f6]'
+                    }`}>
                       <Upload className="h-5 w-5" />
                     </div>
                   </div>
@@ -394,9 +433,15 @@ export default function ContentRepositoryDashboard() {
                   <p className="text-xs text-gray-500 mt-1">PDF files only, file size no more than 10MB</p>
 
                   <div className="mt-3">
-                    <label className="cursor-pointer">
+                    <label className={`cursor-pointer ${creditLeft <= 0 ? 'opacity-50 pointer-events-none' : ''}`}>
                       <span className="bg-[#1f2937] text-[#3b82f6] py-1 px-4 rounded-md text-sm">SELECT FILE</span>
-                      <input type="file" className="hidden" onChange={handleFileChange} accept=".pdf,application/pdf" />
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        onChange={handleFileChange} 
+                        accept=".pdf,application/pdf" 
+                        disabled={creditLeft <= 0}
+                      />
                     </label>
                   </div>
                 </div>
@@ -435,9 +480,13 @@ export default function ContentRepositoryDashboard() {
                 Cancel
               </Button>
               <Button 
-                className="bg-[#3b82f6] hover:bg-[#2563eb] text-white"
+                className={`${
+                  creditLeft <= 0 
+                    ? 'bg-gray-600 cursor-not-allowed' 
+                    : 'bg-[#3b82f6] hover:bg-[#2563eb]'
+                } text-white`}
                 onClick={handleUploadClick}
-                disabled={!selectedFile || isUploading}
+                disabled={!selectedFile || isUploading || creditLeft <= 0}
               >
                 {isUploading ? (
                   <span>Uploading...</span>

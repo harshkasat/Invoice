@@ -29,7 +29,7 @@ export async function GET(req: Request) {
 }
 
 async function checkCredit(userId: string) {
-    const response = await fetch(`http://127.0.0.1:8000/api/v1/db_operation/check_credit??user_id=${userId}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/v1/db_operation/check_credit?user_id=${userId}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     });
