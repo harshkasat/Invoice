@@ -7,7 +7,7 @@ const FeatureSection = () => {
             <div className="mb-12 sm:mb-16 text-center">
               <h2 className="mb-3 sm:mb-4 text-2xl sm:text-3xl font-bold md:text-4xl">Key Features and Capabilities</h2>
               <p className="mx-auto max-w-2xl text-sm sm:text-base text-gray-400">
-                Discover how our platform can transform your business with powerful analytics and insights
+              Discover how our platform simplifies invoice management with cutting-edge AI and automation.
               </p>
             </div>
     
@@ -15,25 +15,24 @@ const FeatureSection = () => {
               {/* Feature 1 */}
               <div className="grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
                 <div>
-                  <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">Navigate with Confidence through Precise Predictions</h3>
+                  <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">Effortless PDF to Excel Conversion</h3>
                   <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-400">
-                    Our advanced AI algorithms analyze historical data and market trends to provide accurate forecasts,
-                    helping you make informed decisions with confidence.
+                  Our AI extracts key invoice details and structures them into a clean Excel format—no manual entry needed.
                   </p>
                   <ul className="space-y-1.5 sm:space-y-2">
                     <li className="flex items-center">
                       <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">Predictive analytics with 95% accuracy</span>
+                      <span className="text-sm sm:text-base text-gray-400">Accurate data extraction</span>
                     </li>
                     <li className="flex items-center">
                       <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">Real-time market insights</span>
+                      <span className="text-sm sm:text-base text-gray-400">Automated formatting</span>
                     </li>
                   </ul>
                 </div>
                 <div className="rounded-lg bg-blue-900/20 p-3 sm:p-6">
                   <Image
-                    src="/placeholder.svg?height=300&width=500"
+                    src="/assets/effortless-pdf-excel.jpeg"
                     alt="Precise Predictions"
                     width={500}
                     height={300}
@@ -46,7 +45,7 @@ const FeatureSection = () => {
               <div className="grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
                 <div className="order-2 md:order-1 rounded-lg bg-blue-900/20 p-3 sm:p-6">
                   <Image
-                    src="/placeholder.svg?height=300&width=500"
+                    src="/assets/seamless-email-delivery.jpeg"
                     alt="Real-Time Data"
                     width={500}
                     height={300}
@@ -54,19 +53,18 @@ const FeatureSection = () => {
                   />
                 </div>
                 <div className="order-1 md:order-2">
-                  <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">Empower Your Forecasts with the Pulse of Real-Time Data</h3>
+                  <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">Seamless Email Delivery</h3>
                   <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-400">
-                    Access live data streams and instant analytics to stay ahead of market changes and capitalize on
-                    emerging opportunities before your competitors.
+                  Receive your processed Excel invoices directly in your inbox within minutes.
                   </p>
                   <ul className="space-y-1.5 sm:space-y-2">
                     <li className="flex items-center">
                       <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">Live data processing</span>
+                      <span className="text-sm sm:text-base text-gray-400">Instant email notifications</span>
                     </li>
                     <li className="flex items-center">
                       <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">Instant alerts and notifications</span>
+                      <span className="text-sm sm:text-base text-gray-400">Secure and hassle-free</span>
                     </li>
                   </ul>
                 </div>
@@ -75,60 +73,29 @@ const FeatureSection = () => {
               {/* Feature 3 */}
               <div className="grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
                 <div>
-                  <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">Visualize Insights through Intuitive Dashboards</h3>
+                  <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">Multi-Format Support</h3>
                   <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-400">
-                    Transform complex data into clear, actionable insights with our customizable dashboards designed for
-                    both technical and non-technical users.
+                  Our tool supports a wide range of invoice formats and templates.
                   </p>
                   <ul className="space-y-1.5 sm:space-y-2">
                     <li className="flex items-center">
                       <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">Drag-and-drop interface</span>
+                      <span className="text-sm sm:text-base text-gray-400">PDF, PNG, and scanned invoices</span>
                     </li>
                     <li className="flex items-center">
                       <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">Customizable visualization options</span>
+                      <span className="text-sm sm:text-base text-gray-400">Intelligent adaptability</span>
                     </li>
                   </ul>
                 </div>
                 <div className="rounded-lg bg-blue-900/20 p-3 sm:p-6">
                   <Image
-                    src="/placeholder.svg?height=300&width=500"
+                    src="/assets/multi-format-support.jpeg"
                     alt="Intuitive Dashboards"
                     width={500}
                     height={300}
                     className="rounded-lg w-full"
                   />
-                </div>
-              </div>
-    
-              {/* Feature 4 */}
-              <div className="grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
-                <div className="order-2 md:order-1 rounded-lg bg-blue-900/20 p-3 sm:p-6">
-                  <Image
-                    src="/placeholder.svg?height=300&width=500"
-                    alt="Integration"
-                    width={500}
-                    height={300}
-                    className="rounded-lg w-full"
-                  />
-                </div>
-                <div className="order-1 md:order-2">
-                  <h3 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">Seamlessly Integrate and Synchronize Your Analytics Ecosystem</h3>
-                  <p className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-400">
-                    Connect with your existing tools and data sources to create a unified analytics environment that
-                    eliminates silos and enhances collaboration.
-                  </p>
-                  <ul className="space-y-1.5 sm:space-y-2">
-                    <li className="flex items-center">
-                      <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">200+ pre-built integrations</span>
-                    </li>
-                    <li className="flex items-center">
-                      <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                      <span className="text-sm sm:text-base text-gray-400">API access for custom connections</span>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>

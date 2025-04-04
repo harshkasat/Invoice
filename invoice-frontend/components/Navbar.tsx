@@ -12,7 +12,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <div className="flex items-center gap-12">
           <Link href="/" className="text-xl font-bold text-white">
-            TallyMate
+            Tally  Mate
           </Link>
           <nav className="hidden md:block">
             <ul className="flex space-x-8">

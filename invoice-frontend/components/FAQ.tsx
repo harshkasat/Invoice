@@ -12,30 +12,34 @@ const FAQ = () => {
           {/* FAQ Item */}
           <div className="rounded-lg border border-gray-800 bg-gray-900/30 p-6">
             <h3 className="mb-4 text-lg font-medium">
-              What is TallyMate and what does it offer other analytics platforms?
+            How quickly will I receive my converted Excel invoice?
             </h3>
             <p className="text-gray-400">
-              TallyMate is an AI-powered analytics platform that combines advanced machine learning algorithms with
-              intuitive user interfaces to provide actionable insights from your data. Unlike other platforms, TallyMate
-              offers real-time processing, predictive analytics, and seamless integration with your existing tools.
+            Our system is designed for speed and efficiency. In most cases, you 
+            will receive your converted Excel invoice in your email inbox within 
+            a few minutes of uploading your PDF. The exact processing time may 
+            vary slightly depending on the size and complexity of the invoice.
             </p>
           </div>
 
           {/* FAQ Item */}
           <div className="rounded-lg border border-gray-800 bg-gray-900/30 p-6">
-            <h3 className="mb-4 text-lg font-medium">Can TallyMate integrate with my existing business tools?</h3>
+            <h3 className="mb-4 text-lg font-medium">What kind of information from the PDF invoice will be extracted into the Excel sheet?</h3>
             <p className="text-gray-400">
-              Yes, TallyMate offers over 200 pre-built integrations with popular business tools and platforms. Our API also
-              allows for custom integrations with your proprietary systems.
+            Our service is designed to extract all the key information you need 
+            from your invoices, including the invoice number, date, vendor details,
+            customer details, line items (description, quantity, unit price, total),
+            subtotal, tax, and total amount. We strive for accurate and comprehensive data extraction.
             </p>
           </div>
 
           {/* FAQ Item */}
           <div className="rounded-lg border border-gray-800 bg-gray-900/30 p-6">
-            <h3 className="mb-4 text-lg font-medium">Is my data secure with TallyMate?</h3>
+            <h3 className="mb-4 text-lg font-medium">Is my uploaded invoice data secure?</h3>
             <p className="text-gray-400">
-              Absolutely. We implement enterprise-grade security measures including end-to-end encryption, regular
-              security audits, and compliance with industry standards like GDPR, HIPAA, and SOC 2.
+            Yes, the security of your data is our top priority. We utilize secure protocols 
+            for file uploads and processing. Your files are only used for the purpose of 
+            conversion and are not stored permanently on our servers after the conversion process is complete.
             </p>
           </div>
         </div>
