@@ -44,7 +44,7 @@ const VideoSection = () => {
             autoPlay
             muted
             loop
-            src="/assets/video.mp4" // Ensure this path is correct
+            src="https://res.cloudinary.com/debxcs6le/video/upload/v1743768089/invoice-assets/ykhtjjzf9cretddnqin9.mp4" // Ensure this path is correct
           />
         )}
       </div>
