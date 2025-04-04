@@ -44,7 +44,7 @@ const Navbar = () => {
           <Link href="/sign-in" className="hidden text-sm text-gray-400 hover:text-white md:block">
             Sign in
           </Link>
-          <SignUpButton>
+          <SignUpButton forceRedirectUrl={"/dashboard"}>
             <Button className="hidden md:block rounded-full bg-blue-600 px-6 hover:bg-blue-700">
               Get Started
             </Button>

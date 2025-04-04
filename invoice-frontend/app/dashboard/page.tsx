@@ -230,7 +230,12 @@ export default function ContentRepositoryDashboard() {
           <span>≡</span>
         </div>
         <div className="mt-auto mb-4">
-          <UserButton/>
+          <UserButton
+          appearance={{
+            elements:{
+              userButtonPopoverActionButton__manageAccount: "hidden"
+            }
+          }}/>
         </div>
         <div className="w-8 h-8 rounded-md bg-[#1f2937] flex items-center justify-center text-[#3b82f6]">
           <span>?</span>
@@ -280,7 +285,12 @@ export default function ContentRepositoryDashboard() {
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
           <div className="flex items-center justify-between">
-            <UserButton/>
+            <UserButton 
+              appearance={{
+                elements:{
+                  userButtonPopoverActionButton__manageAccount: "hidden"
+                }
+              }} />``
             <div className="w-8 h-8 rounded-md bg-[#1f2937] flex items-center justify-center text-[#3b82f6]">
               <span>?</span>
             </div>

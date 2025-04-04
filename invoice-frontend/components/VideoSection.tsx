@@ -5,11 +5,32 @@ import { useVideo } from '../contexts/VideoContext'
 const VideoSection = () => {
   const { isPlaying, setIsPlaying } = useVideo();
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setIsPlaying(false);
+    }
+  };
+
   return (
-    <section id="video-section" className="container mx-auto mb-24 px-4">
-      <div className="relative mx-auto overflow-hidden rounded-xl">
-        {!isPlaying ? (
-          // Thumbnail with Play Button
+    <>
+      {isPlaying && (
+        <div 
+          className="fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={handleBackdropClick}
+        >
+          <div className="w-full max-w-6xl min-h-[80vh]">
+            <video
+              className="w-full h-full rounded-xl object-cover"
+              controls
+              autoPlay
+              src="https://res.cloudinary.com/debxcs6le/video/upload/v1743768089/invoice-assets/ykhtjjzf9cretddnqin9.mp4"
+            />
+          </div>
+        </div>
+      )}
+      <section id="video-section" className="container mx-auto mb-24 px-4">
+        <div className="relative mx-auto overflow-hidden rounded-xl">
+          {/* Thumbnail with Play Button */}
           <div 
             className="relative cursor-pointer"
             onClick={() => setIsPlaying(true)}
@@ -36,19 +57,9 @@ const VideoSection = () => {
               </button>
             </div>
           </div>
-        ) : (
-          // Video Element (Only Shown After Click)
-          <video
-            className="w-full h-full rounded-xl object-cover"
-            controls
-            autoPlay
-            muted
-            loop
-            src="https://res.cloudinary.com/debxcs6le/video/upload/v1743768089/invoice-assets/ykhtjjzf9cretddnqin9.mp4" // Ensure this path is correct
-          />
-        )}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   )
 }
 
