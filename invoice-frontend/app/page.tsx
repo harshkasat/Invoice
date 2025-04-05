@@ -10,10 +10,48 @@ import FAQ from "@/components/FAQ"
 import { BackgroundPaths } from "@/components/ui/background-path"
 import Footer from "@/components/Footer"
 import { VideoProvider } from "../contexts/VideoContext"
+import { useEffect } from "react"
+import toast, { Toaster } from "react-hot-toast"
+
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://127.0.0.1:8000/";
+
+const checkBackendServerRunning = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}`, {  // Remove trailing slash
+      method: "GET",
+      headers: {
+        "accept": "application/json"
+      },
+    });
+    
+    if (!response.ok) {
+      toast.error(`Backend server error: ${response.status} ${response.statusText}`);
+      throw new Error('Failed to connect to backend');
+    }
+    toast.success('Connected to backend server');
+    
+  } catch (error) {
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      toast.error('Cannot connect to backend server. Please ensure it is running.');
+    } else {
+      toast.error('Unexpected error connecting to backend');
+    }
+    console.error('Backend connection error:', error);
+  }
+}
 
 export default function Home() {
+
+  // Check if the backend server is running
+  useEffect(() => {
+    checkBackendServerRunning();
+  }, [])
+  
+
   return (
     <div className="min-h-screen bg-[#0d1121] text-white pt-[72px]">
+      <Toaster position="top-right" />
       <BackgroundPaths/>
       {/* Navigation */}
       <Navbar/>

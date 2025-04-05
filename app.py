@@ -58,6 +58,3 @@ app.include_router(
 
 # if __name__ == "__main__":
 #     uvicorn.run('app:app', reload=True, host="0.0.0.0", port=8000, log_level="info")
-
-# For Vercel deployment
-app = app
