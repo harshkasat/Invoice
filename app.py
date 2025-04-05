@@ -10,12 +10,13 @@ load_dotenv()
 
 
 
-if os.getenv('LOCAL_HOST'):
-    app = FastAPI()
-else:
-    app = FastAPI(docs_url=None,
-                  redoc_url=None)
+# if os.getenv('LOCAL_HOST'):
+#     app = FastAPI()
+# else:
+#     app = FastAPI(docs_url=None,
+#                   redoc_url=None)
 
+app = FastAPI()
 
 print("Starting FastAPI server...")
 app.add_middleware(
