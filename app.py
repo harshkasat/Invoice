@@ -20,7 +20,7 @@ else:
 print("Starting FastAPI server...")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000', 'https://invoice.cognitodev.space/'],  # Use only the origin
+    allow_origins=['http://localhost:3000', 'https://invoice.cognitodev.space'],  # Use only the origin
     allow_credentials=True,
     allow_methods=["*"],  # Allows all HTTP methods
     allow_headers=["*"],  # Allows all headers
