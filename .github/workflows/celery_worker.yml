@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install redis
+          pip install redis openpyxl
 
       - name: Run Celery worker
         env:
