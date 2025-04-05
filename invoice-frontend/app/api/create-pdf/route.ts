@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
 
+const BASE_URL = process.env.NEXT_BACKEND_URL || "http://127.0.0.1:8000";
+
 export async function POST(req: Request) {
     const { userId, redirectToSignIn } = await auth();
 
@@ -30,7 +32,7 @@ export async function POST(req: Request) {
         apiFormData.append('file', file);
         apiFormData.append('user_id', user_id.value);
 
-        const response = await fetch(`http://127.0.0.1:8000/api/v1/upload/upload_invoice?user_id=${user_id.value}`, {
+        const response = await fetch(`${BASE_URL}/api/v1/upload/upload_invoice?user_id=${user_id.value}`, {
             method: "POST",
             body: apiFormData
         });

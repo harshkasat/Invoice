@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
+const BASE_URL = process.env.NEXT_BACKEND_URL || "http://127.0.0.1:8000";
+
+
 interface UserData {
     email: string;
     username: string;
@@ -48,7 +51,7 @@ export async function POST(req: Request) {
 }
 
 async function createUser(userData: UserData) {
-    const response = await fetch('http://127.0.0.1:8000/api/v1/db_operation/create_user', {
+    const response = await fetch(`${BASE_URL}/api/v1/db_operation/create_user`, {
         method:"POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
