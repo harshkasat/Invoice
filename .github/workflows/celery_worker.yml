@@ -27,16 +27,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install redis celery
 
       - name: Run Celery worker
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          SERVICE_NAME: ${{ secrets.SERVICE_NAME }}
-          REGION_NAME: ${{ secrets.REGION_NAME }}
-          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
           REDIS_BROKER_URL: ${{ secrets.REDIS_BROKER_URL }}
 
           EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
