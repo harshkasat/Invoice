@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from jwt import PyJWKClient
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,8 +8,6 @@ from Router import upload_invoice, task_status, db_route
 
 load_dotenv()
 
-JWKS_URL = "https://concrete-duckling-78.clerk.accounts.dev/.well-known/jwks.json"
-jwks_client = PyJWKClient(JWKS_URL)
 
 
 if os.getenv('LOCAL_HOST'):
@@ -61,3 +58,6 @@ app.include_router(
 
 # if __name__ == "__main__":
 #     uvicorn.run('app:app', reload=True, host="0.0.0.0", port=8000, log_level="info")
+
+# For Vercel deployment
+app = app
