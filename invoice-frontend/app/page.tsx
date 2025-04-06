@@ -17,28 +17,40 @@ import toast, { Toaster } from "react-hot-toast"
 const BASE_URL = process.env.NEXT_BACKEND_URL || "http://127.0.0.1:8000/";
 
 const checkBackendServerRunning = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}`, {  // Remove trailing slash
-      method: "GET",
-      headers: {
-        "accept": "application/json"
-      },
-    });
-    
-    if (!response.ok) {
-      toast.error(`Backend server error: ${response.status} ${response.statusText}`);
-      throw new Error('Failed to connect to backend');
+  let attempts = 0;
+  const maxAttempts = 40;
+  
+  const tryConnect = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}`, {
+        method: "GET",
+        headers: {
+          "accept": "application/json"
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Backend server error: ${response.status} ${response.statusText}`);
+      }
+      toast.success('Connected to backend server');
+      return true;
+    } catch (error) {
+      attempts++;
+      if (attempts >= maxAttempts) {
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          toast.error('Cannot connect to backend server after 40 seconds. Please ensure it is running.');
+        } else {
+          toast.error('Unexpected error connecting to backend');
+        }
+        console.error('Backend connection error:', error);
+        return false;
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return tryConnect();
     }
-    toast.success('Connected to backend server');
-    
-  } catch (error) {
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      toast.error('Cannot connect to backend server. Please ensure it is running.');
-    } else {
-      toast.error('Unexpected error connecting to backend');
-    }
-    console.error('Backend connection error:', error);
-  }
+  };
+
+  await tryConnect();
 }
 
 export default function Home() {
