@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
 
-const BASE_URL = process.env.NEXT_BACKEND_URL || "http://127.0.0.1:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000";
 
 
 export async function GET(req: Request) {
