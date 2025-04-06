@@ -167,9 +167,12 @@ export default function ContentRepositoryDashboard() {
   };
 
   useEffect(() => {
-    createUserID();
-    getListPdf();
-    getCheckCredit();
+    const initializeData = async () => {
+      await createUserID();
+      await getListPdf();
+      await getCheckCredit();
+    };
+    initializeData();
   }, []);
 
   // Function to format date from ISO string
