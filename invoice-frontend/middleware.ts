@@ -6,6 +6,20 @@ const isDashboardRoute = createRouteMatcher(['/dashboard(.*)'])
 const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
+  const { userId } = await auth();
+  
+  // If no user is present and there's a user_id cookie, remove it
+  if (!userId) {
+    const response = NextResponse.next();
+    response.cookies.set({
+      name: 'user_id',
+      value: '',
+      expires: new Date(0),
+      path: '/',
+    });
+    return response;
+  }
+
   if (!isPublicRoute(req)) {
     await auth.protect()
   }
@@ -21,6 +35,7 @@ export default clerkMiddleware(async (auth, req) => {
     await auth.protect()
   }
 
+  return NextResponse.next();
 })
 
 export const config = {

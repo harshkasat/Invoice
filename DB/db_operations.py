@@ -31,6 +31,7 @@ class PDFModel:
                             "name": pdf.pdf_name,
                             "link": pdf.pdf_link,
                             "folder": "Documents",
+                            "task_status":bool(pdf.task_status),
                             "created_at": str(pdf.created_at)
                         })
                     return pdf_list
@@ -198,7 +199,7 @@ class UserManager:
         except Exception as e:
             print(f"Error listing users: {e}")
             return {"view_users": [], "edit_users": []}
-    
+
     def get_user_info(self, user_id:str):
         try:
             with SessionLocal() as session:
@@ -210,7 +211,7 @@ class UserManager:
         except Exception as e:
             print(f"Error checking user: {e}")
             return None
-    
+
     def check_credit_limit(self, user_id:str):
         try:
             with SessionLocal() as session:

@@ -1,6 +1,6 @@
 import uuid
 import enum
-from sqlalchemy import Column, String, Integer, Text, ForeignKey, func, Enum, DateTime
+from sqlalchemy import Column, String, Integer, Text, ForeignKey, func, Enum, DateTime, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declarative_base
 from DB import engine
@@ -28,6 +28,7 @@ class PDF(Base):
     pdf_link = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    task_status = Column(Boolean, nullable=False, default=False)
 
 # Move table creation to the bottom and add a function to handle it
 def init_db():

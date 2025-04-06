@@ -37,19 +37,26 @@ async def upload_invoice(user_id:str, file: UploadFile = File(...)):
 
         # Upload the file to cloudinary
         user = UserManager()  # Use Role enum
-        response = user.get_user_info(user_id=user_id)
+        user_info = user.get_user_info(user_id=user_id)
         pdf_service = PDFService()
-        secure_url, public_id, original_filename = pdf_service.save_pdf(
+        response = pdf_service.save_pdf(
             user_id=user_id,
             file_path=temp_file_path,
             file_name=file.filename
         )
+        if isinstance(response, str):
+            return JSONResponse({
+                "message":response
+            })
+
+        secure_url, public_id, original_filename = response
 
         # Delete the temporary file
         os.unlink(temp_file_path)
 
         # Start Celery task
-        task = process_file_task.delay(public_id, email=response['email'])
+        task = process_file_task.delay(public_id, email=user_info['email'])
+        print(task)
 
         return JSONResponse(
             content={
@@ -60,7 +67,6 @@ async def upload_invoice(user_id:str, file: UploadFile = File(...)):
                 "task_id": task.id
             }
         )
-
 
     except Exception as e:
         print(f"Error uploading file: {e}")

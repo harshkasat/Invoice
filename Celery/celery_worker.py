@@ -4,7 +4,7 @@ from ProcessInvoice.convert_xlsx import _convert_xlsx
 from ProcessInvoice.process_zipfile import process_zip
 from Email.send_bulk_email import send_email_with_attachment
 from Celery import celery_app
-
+from utils.task_status import task_success
 
 
 cloud_storage = CloudinaryStorage()
@@ -25,8 +25,12 @@ def process_file_task(public_id: str, email: str) -> dict:
         if combined_result:
             result_key = f"results/{process_file_task.request.id}.xlsx"
             xlsx_file_content = _convert_xlsx(json_file=combined_result)
-            send_email_with_attachment(to_address=email, task_id=process_file_task.request.id, file_content=xlsx_file_content, file_name='invoice_report.xlsx')
+            send_email_with_attachment(to_address=email,
+                                       task_id=process_file_task.request.id,
+                                       file_content=xlsx_file_content,
+                                       file_name='invoice_report.xlsx')
 
+            task_success(public_id=str(public_id))
             return {"message": "Processing completed", "result_key": result_key}
         else:
             return {"message": "Processing completed", "result_key": None}
