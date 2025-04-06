@@ -14,8 +14,7 @@ import { useEffect } from "react"
 import toast, { Toaster } from "react-hot-toast"
 
 
-const BASE_URL = process.env.NEXT_BACKEND_URL || "http://127.0.0.1:8000/";
-console.log(BASE_URL)
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000/";
 
 const checkBackendServerRunning = async () => {
   let attempts = 0;
