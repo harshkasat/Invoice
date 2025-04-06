@@ -49,7 +49,7 @@ export default function SignUp() {
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId })
         router.push("/dashboard")
-      } else if (result.status === "needs_verification") {
+      } else if (result.status === "missing_requirements") {
         setPendingVerification(true)
       } else {
         setError("Something went wrong. Please try again.")
