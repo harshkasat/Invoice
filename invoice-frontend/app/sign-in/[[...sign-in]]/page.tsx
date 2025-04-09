@@ -50,11 +50,12 @@ export default function SignIn() {
   const handleOAuthSignIn = async (provider: "oauth_google") => {
     if (!isLoaded) return
     try {
-      await signIn.authenticateWithRedirect({
+      const signInStatus = await signIn.authenticateWithRedirect({
         strategy: provider,
-        redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/dashboard",
+        redirectUrl: '/dashboard',
+        redirectUrlComplete: '/dashboard',
       })
+      console.log(signInStatus)
     } catch (err: any) {
       setError(err.errors?.[0]?.message || "An error occurred")
     }

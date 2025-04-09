@@ -86,18 +86,24 @@ export default function SignUp() {
     }
   }
 
-  const handleOAuthSignUp = async (provider: "oauth_google") => {
-    if (!isLoaded) return
+  const handleGoogleSignUp = async () => {  
+    if (!isLoaded) return;
     try {
       await signUp.authenticateWithRedirect({
-        strategy: provider,
-        redirectUrl: "/sso-callback",
+        strategy: "oauth_google",
+        redirectUrl: "/dashboard",
         redirectUrlComplete: "/dashboard",
-      })
-    } catch (err: any) {
-      setError(err.errors?.[0]?.message || "An error occurred")
-    }
-  }
+      });
+    }catch (err:any) {
+      if (err.code === 'authentication_failed') {
+        setError("Authentication with Google failed. Please try again.");
+      } else if (err.code === 'form_identifier_exists') {
+        setError("An account with this Google email already exists. Please sign in instead.");
+      } else {
+        setError(err.errors[0]?.message || "An error occurred during Google sign-up. Please try again.");
+      }
+      }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0c17] to-[#111827]">
@@ -195,7 +201,7 @@ export default function SignUp() {
                     <Button
                       variant="outline"
                       className="border-gray-700 text-black-300 hover:bg-blue-600 hover:text-white"
-                      onClick={() => handleOAuthSignUp("oauth_google")}
+                      onClick={() => handleGoogleSignUp()}
                       disabled={isLoading}
                     >
                       <svg

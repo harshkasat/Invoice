@@ -52,7 +52,7 @@ export function CustomUserButton() {
 
   return (
     <UserProfileButton
-      username={user.username || "User"}
+      username={user.fullName || "User"}
       email={user.primaryEmailAddress?.emailAddress || ""}
       imageUrl={user.imageUrl}
       onSignOut={() => signOut()}

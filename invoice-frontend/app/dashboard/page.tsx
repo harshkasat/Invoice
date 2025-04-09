@@ -29,7 +29,7 @@ export default function ContentRepositoryDashboard() {
   const [searchOpen, setSearchOpen] = useState(false) // For mobile search toggle
 
   const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-  
+
   const deletePdf = async (filename: string) => {
     try {
       const response = await fetch(`${BASE_URL}/api/delete-pdf/${filename}`, {
@@ -168,8 +168,8 @@ export default function ContentRepositoryDashboard() {
   useEffect(() => {
     const initializeData = async () => {
       await createUserID();
-      await getListPdf();
-      await getCheckCredit();
+      getListPdf();
+      getCheckCredit();
     };
     initializeData();
   }, []);
