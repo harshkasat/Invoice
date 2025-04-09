@@ -1,48 +1,58 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { NextResponse } from 'next/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/', '/soon(.*)'])
-const isDashboardRoute = createRouteMatcher(['/dashboard(.*)'])
-const isAdminRoute = createRouteMatcher(['/admin(.*)'])
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/soon(.*)',
+]);
+
+const isDashboardRoute = createRouteMatcher(['/dashboard(.*)']);
+const isAdminRoute = createRouteMatcher(['/admin(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
-  const { userId } = await auth();
-  
-  // If no user is present and there's a user_id cookie, remove it
+  const { userId, sessionClaims } = await auth();
+
+  if (isPublicRoute(req)) {
+    return NextResponse.next();
+  }
+
+  // If user is not logged in, clear the user_id cookie
   if (!userId) {
-    const response = NextResponse.next();
+    const response = NextResponse.redirect(new URL('/sign-in', req.url));
     response.cookies.set({
       name: 'user_id',
       value: '',
       expires: new Date(0),
       path: '/',
     });
-    return response;
+    return response
   }
 
-  if (!isPublicRoute(req)) {
-    await auth.protect()
+  // Protect /admin routes for users with role !== admin
+  if (isAdminRoute(req)) {
+    const role = sessionClaims?.metadata?.role;
+    if (role !== 'admin') {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
   }
 
-  // Restrict admin route to users with specific role
-  if (isAdminRoute(req) && (await auth()).sessionClaims?.metadata?.role !== 'admin') {
-    const url = new URL('/', req.url)
-    return NextResponse.redirect(url)
-  }
-
-  // Restrict dashboard routes to signed in users
-  if (isDashboardRoute(req)){
-    await auth.protect()
+  // Protect /dashboard routes
+  if (isDashboardRoute(req)) {
+    if (!userId) {
+      return NextResponse.redirect(new URL('/sign-in', req.url));
+    }
   }
 
   return NextResponse.next();
-})
+});
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
+    // Match all routes except static files and internal Next.js paths
+    '/((?!_next|.*\\..*).*)',
+    // Also match API routes
     '/(api|trpc)(.*)',
   ],
-}
+};
