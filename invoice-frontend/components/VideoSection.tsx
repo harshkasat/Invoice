@@ -23,7 +23,7 @@ const VideoSection = () => {
               className="w-full h-full rounded-xl object-cover"
               controls
               autoPlay
-              src="https://res.cloudinary.com/debxcs6le/video/upload/v1743768089/invoice-assets/ykhtjjzf9cretddnqin9.mp4"
+              src="https://res.cloudinary.com/debxcs6le/video/upload/v1744232088/invoice-assets/v9lvrb0h6lqbtchgzyr7.mp4"
             />
           </div>
         </div>
