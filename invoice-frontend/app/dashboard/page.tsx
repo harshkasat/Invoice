@@ -149,7 +149,7 @@ export default function ContentRepositoryDashboard() {
       
       const data = await response.json();
       console.log('Credit Left:', data);
-      setCreditLeft(data.creditLeft || 0); // Assuming the API returns an object with creditLeft property
+      setCreditLeft(data?.creditLeft || 0); // Assuming the API returns an object with creditLeft property
     } catch (error) {
       console.error('Error fetching Credit Left:', error);
     }
@@ -413,7 +413,7 @@ export default function ContentRepositoryDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(pdfList || []).map((file, index) => (
+                  {(Array.isArray(pdfList) ? pdfList : []).map((file, index) => (
                     <tr key={getFileId(file, index)} className={index % 2 === 0 ? "bg-[#111827]" : "bg-[#1a2235]"}>
                       <td className="py-3 text-[#3b82f6] font-medium">{getFileId(file, index)}</td>
                       <td className="py-3">

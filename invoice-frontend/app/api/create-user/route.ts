@@ -76,6 +76,6 @@ async function fetchUserData(userId: string) {
     const user = await response.json();
     return {
         email: user.email_addresses[0].email_address,
-        username: user.username,
+        username: user.first_name,
     };
 }
