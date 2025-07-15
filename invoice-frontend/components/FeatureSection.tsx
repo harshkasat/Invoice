@@ -30,9 +30,9 @@ const FeatureSection = () => {
                     </li>
                   </ul>
                 </div>
-                <div className="rounded-lg bg-blue-900/20 p-3 sm:p-6">
+                <div className="rounded-lg p-3 sm:p-6">
                   <Image
-                    src="/assets/effortless-pdf-excel.jpeg"
+                    src="/assets/bento-1-img.png"
                     alt="Precise Predictions"
                     width={500}
                     height={300}
@@ -43,9 +43,9 @@ const FeatureSection = () => {
     
               {/* Feature 2 */}
               <div className="grid gap-6 sm:gap-8 md:grid-cols-2 md:items-center">
-                <div className="order-2 md:order-1 rounded-lg bg-blue-900/20 p-3 sm:p-6">
+                <div className="order-2 md:order-1 rounded-lgp-3 sm:p-6">
                   <Image
-                    src="/assets/seamless-email-delivery.jpeg"
+                    src="/assets/bento-2-img.png"
                     alt="Real-Time Data"
                     width={500}
                     height={300}
@@ -88,9 +88,9 @@ const FeatureSection = () => {
                     </li>
                   </ul>
                 </div>
-                <div className="rounded-lg bg-blue-900/20 p-3 sm:p-6">
+                <div className="rounded-lg  p-3 sm:p-6">
                   <Image
-                    src="/assets/multi-format-support.jpeg"
+                    src="/assets/bento-3-img.png"
                     alt="Intuitive Dashboards"
                     width={500}
                     height={300}
